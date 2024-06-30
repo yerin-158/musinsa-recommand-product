@@ -2,6 +2,8 @@ package com.example.musinsarecommandproduct.entities;
 
 import com.example.musinsarecommandproduct.enums.ProductStatus;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 
 /**
@@ -22,6 +24,8 @@ public class Product extends BaseEntity{
   private Long categoryId;
   private String name;
   private Integer price;
+
+  @Enumerated(EnumType.STRING)
   private ProductStatus status;
 
 }
