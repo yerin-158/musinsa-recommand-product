@@ -18,7 +18,7 @@ public class RecommendController {
 
   @GetMapping("/cheapest-set")
   public ResponseEntity<ProductSetResponse> getCheapestProductSet(@Param("byBrand") Boolean byBrand) {
-    return ResponseEntity.ok(new ProductSetResponse());
+    return ResponseEntity.ok(new ProductSetResponse(null, null));
   }
 
 }

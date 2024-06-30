@@ -1,5 +1,7 @@
 package com.example.musinsarecommandproduct.controller.dto;
 
+import java.util.List;
+
 /**
  * Created by yerin-158 on 6/30/24.
  *
@@ -7,5 +9,4 @@ package com.example.musinsarecommandproduct.controller.dto;
  * @version 6/30/24.
  * @implNote First created
  */
-public record ProductSetResponse() {
-}
+public record ProductSetResponse(List<ProductResponse> products, Long sumPrice) { }

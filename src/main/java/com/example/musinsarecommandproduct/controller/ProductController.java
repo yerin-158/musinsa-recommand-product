@@ -21,8 +21,8 @@ public class ProductController {
 
   @GetMapping("/categories/{categoryId}/summary")
   public ResponseEntity<ProductByCategoryResponse> getProductsSummaryByCategory(
-      @PathVariable("id") Long categoryId, @Param("priceType") PriceType priceType) {
-    return ResponseEntity.ok(new ProductByCategoryResponse());
+      @PathVariable("categoryId") Long categoryId, @Param("priceType") PriceType priceType) {
+    return ResponseEntity.ok(new ProductByCategoryResponse(null, null, null));
   }
 
 }

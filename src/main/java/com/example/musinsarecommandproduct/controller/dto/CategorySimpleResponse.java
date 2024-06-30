@@ -1,7 +1,5 @@
 package com.example.musinsarecommandproduct.controller.dto;
 
-import java.util.List;
-
 /**
  * Created by yerin-158 on 6/30/24.
  *
@@ -9,5 +7,4 @@ import java.util.List;
  * @version 6/30/24.
  * @implNote First created
  */
-public record ProductByCategoryResponse(String categoryName, List<ProductResponse> cheapProducts, List<ProductResponse> expensiveProducts) {
-}
+public record CategorySimpleResponse(Long id, String name) {}
