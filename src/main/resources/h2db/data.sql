@@ -12,15 +12,15 @@ INSERT INTO brands (name, status, created_at, updated_at) VALUES
 ('Brand Kappa', 'EXPOSED', NOW(), NOW());
 
 -- 카테고리 데이터 삽입
-INSERT INTO categories (name, code, created_at, updated_at) VALUES
-('상의', 'TOP', NOW(), NOW()),
-('아우터', 'OUTER', NOW(), NOW()),
-('바지', 'BOTTOM', NOW(), NOW()),
-('스니커즈', 'SNEAKERS', NOW(), NOW()),
-('가방', 'BAG', NOW(), NOW()),
-('모자', 'HAT', NOW(), NOW()),
-('양말', 'SOCKS', NOW(), NOW()),
-('악세서리', 'ACCESSORY', NOW(), NOW());
+INSERT INTO categories (name, created_at, updated_at) VALUES
+('상의', NOW(), NOW()),
+('아우터', NOW(), NOW()),
+('바지', NOW(), NOW()),
+('스니커즈', NOW(), NOW()),
+('가방', NOW(), NOW()),
+('모자', NOW(), NOW()),
+('양말', NOW(), NOW()),
+('악세서리', NOW(), NOW());
 
 -- 상품 데이터 삽입
 -- Brand Alpha
