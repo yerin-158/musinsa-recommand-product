@@ -1,4 +1,4 @@
-package com.example.musinsarecommandproduct.controller;
+package com.example.musinsarecommandproduct.controller.dto;
 
 /**
  * Created by yerin-158 on 6/30/24.
@@ -7,5 +7,5 @@ package com.example.musinsarecommandproduct.controller;
  * @version 6/30/24.
  * @implNote First created
  */
-public class TestController {
+public record ProductByCategoryResponse() {
 }
