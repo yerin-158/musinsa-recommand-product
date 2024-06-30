@@ -1,5 +1,6 @@
 package com.example.musinsarecommandproduct.service;
 
+import com.example.musinsarecommandproduct.entitie.Category;
 import com.example.musinsarecommandproduct.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,5 +17,9 @@ import org.springframework.stereotype.Service;
 public class CategoryService {
 
   private final CategoryRepository categoryRepository;
+
+  public Category findById(Long id) {
+    return categoryRepository.findById(id).orElseThrow(() -> new RuntimeException());
+  }
 
 }

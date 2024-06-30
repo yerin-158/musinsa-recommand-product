@@ -8,10 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Created by yerin-158 on 6/30/24.
@@ -20,7 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @version 6/30/24.
  * @implNote First created
  */
-@RestController("/api/v1/products")
+@RestController
+@RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
 public class ProductController {
 
@@ -29,16 +29,15 @@ public class ProductController {
   @GetMapping("/categories/{categoryId}/summary")
   public ResponseEntity<ProductByCategoryResponse> getProductsSummaryByCategory(
       @PathVariable("categoryId") Long categoryId,
-      @RequestParam("priceType") PriceType priceType,
+      @RequestParam("priceType") List<PriceType> priceTypes,
       @RequestParam(value = "size", required = false, defaultValue = "1") Integer size) {
 
-    if (categoryId == null || priceType == null) {
+    if (categoryId == null || priceTypes == null || priceTypes.isEmpty()) {
       throw new RuntimeException();
     }
 
-
-
-    return ResponseEntity.ok(new ProductByCategoryResponse(null, null, null));
+    ProductByCategoryResponse response = productService.getProductByCategory(categoryId, priceTypes, size);
+    return ResponseEntity.ok(response);
   }
 
 }

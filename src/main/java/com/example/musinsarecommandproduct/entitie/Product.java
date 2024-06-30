@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import lombok.Getter;
 
 /**
  * Created by yerin-158 on 6/30/24.
@@ -14,6 +15,7 @@ import jakarta.persistence.Id;
  * @implNote First created
  */
 @Entity(name = "products")
+@Getter
 public class Product extends BaseEntity{
 
   @Id

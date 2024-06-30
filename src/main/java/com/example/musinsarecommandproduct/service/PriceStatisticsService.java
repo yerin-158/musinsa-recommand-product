@@ -2,6 +2,7 @@ package com.example.musinsarecommandproduct.service;
 
 import com.example.musinsarecommandproduct.entitie.PriceStatistics;
 import com.example.musinsarecommandproduct.entitie.specs.PriceStatisticsSpecs;
+import com.example.musinsarecommandproduct.enums.PriceType;
 import com.example.musinsarecommandproduct.repository.PriceStatisticsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,12 +27,15 @@ public class PriceStatisticsService {
 
   private final PriceStatisticsRepository priceStatisticsRepository;
 
-  public List<PriceStatistics> findExpensiveProductByCategoryId(Long categoryId, Integer size) {
-    return this.findByCategoryId(categoryId, size, Sort.by(Sort.Direction.DESC, "price"));
-  }
+  public List<PriceStatistics> find(Long categoryId, PriceType priceType, Integer size) {
+    if (priceType.equals(PriceType.CHEAP)) {
+      return this.findByCategoryId(categoryId, size, Sort.by(Sort.Direction.ASC, "lowestPrice"));
+    }
 
-  public List<PriceStatistics> findCheapPriceProductByCategoryId(Long categoryId, Integer size) {
-    return this.findByCategoryId(categoryId, size, Sort.by(Sort.Direction.ASC, "price"));
+    if (priceType.equals(PriceType.EXPENSIVE)) {
+      return this.findByCategoryId(categoryId, size, Sort.by(Sort.Direction.DESC, "highestPrice"));
+    }
+    return new ArrayList<>();
   }
 
   private List<PriceStatistics> findByCategoryId(Long categoryId, Integer size, Sort sort) {

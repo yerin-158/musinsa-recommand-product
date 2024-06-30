@@ -39,6 +39,6 @@ public interface ProductMapper {
       @Mapping(source = "cheapProducts", target = "cheapProducts"),
       @Mapping(source = "expensiveProducts", target = "expensiveProducts")
   })
-  ProductByCategoryResponse toProductByCategoryResponse(Category category, List<Product> cheapProducts, List<Product> expensiveProducts);
+  ProductByCategoryResponse toProductByCategoryResponse(Category category, List<ProductResponse> cheapProducts, List<ProductResponse> expensiveProducts);
 
 }
