@@ -1,4 +1,4 @@
-package com.example.musinsarecommandproduct.controllers;
+package com.example.musinsarecommandproduct.controller;
 
 /**
  * Created by yerin-158 on 6/30/24.

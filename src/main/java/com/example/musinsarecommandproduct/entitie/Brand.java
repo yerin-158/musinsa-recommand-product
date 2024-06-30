@@ -1,4 +1,4 @@
-package com.example.musinsarecommandproduct.entities;
+package com.example.musinsarecommandproduct.entitie;
 
 import com.example.musinsarecommandproduct.enums.BrandStatus;
 import jakarta.persistence.Entity;

@@ -1,6 +1,6 @@
 package com.example.musinsarecommandproduct.repository;
 
-import com.example.musinsarecommandproduct.entities.Brand;
+import com.example.musinsarecommandproduct.entitie.Brand;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
