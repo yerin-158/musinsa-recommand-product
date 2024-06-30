@@ -35,6 +35,8 @@ CREATE TABLE price_statistics (
     category_id BIGINT NOT NULL,  -- 카테고리 id
     highest_price_product_id BIGINT,  -- 제일 비싼 상품 id
     lowest_price_product_id BIGINT,  -- 제일 저렴한 상품 id
+    highest_price INT, -- 제일 비싼 상품 가격
+    lowest_price INT, -- 제일 저렴한 상품 가격
     created_at DATETIME NOT NULL,  -- 생성일
     updated_at DATETIME NOT NULL,  -- 수정일
     UNIQUE (brand_id, category_id) -- 유니크 (brand_id, category_id)

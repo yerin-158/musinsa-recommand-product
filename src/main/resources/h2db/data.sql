@@ -215,111 +215,111 @@ INSERT INTO products (brand_id, category_id, name, price, status, created_at, up
 
 -- 가격 통계 데이터 삽입
 -- Brand Alpha
-INSERT INTO price_statistics (brand_id, category_id, highest_price_product_id, lowest_price_product_id, created_at, updated_at) VALUES
-(1, 1, 2, 1, NOW(), NOW()),
-(1, 2, 4, 3, NOW(), NOW()),
-(1, 3, 6, 5, NOW(), NOW()),
-(1, 4, 8, 7, NOW(), NOW()),
-(1, 5, 10, 9, NOW(), NOW()),
-(1, 6, 12, 11, NOW(), NOW()),
-(1, 7, 14, 13, NOW(), NOW()),
-(1, 8, 16, 15, NOW(), NOW());
+INSERT INTO price_statistics (brand_id, category_id, highest_price_product_id, lowest_price_product_id, highest_price, lowest_price, created_at, updated_at) VALUES
+(1, 1, 2, 1, 10550, 10200, NOW(), NOW()),
+(1, 2, 4, 3, 25800, 25500, NOW(), NOW()),
+(1, 3, 6, 5, 15750, 15300, NOW(), NOW()),
+(1, 4, 8, 7, 30600, 30200, NOW(), NOW()),
+(1, 5, 10, 9, 40850, 40200, NOW(), NOW()),
+(1, 6, 12, 11, 8500, 8200, NOW(), NOW()),
+(1, 7, 14, 13, 5300, 5100, NOW(), NOW()),
+(1, 8, 16, 15, 7500, 7200, NOW(), NOW());
 
 -- Brand Beta
-INSERT INTO price_statistics (brand_id, category_id, highest_price_product_id, lowest_price_product_id, created_at, updated_at) VALUES
-(2, 1, 18, 17, NOW(), NOW()),
-(2, 2, 20, 19, NOW(), NOW()),
-(2, 3, 22, 21, NOW(), NOW()),
-(2, 4, 24, 23, NOW(), NOW()),
-(2, 5, 26, 25, NOW(), NOW()),
-(2, 6, 28, 27, NOW(), NOW()),
-(2, 7, 30, 29, NOW(), NOW()),
-(2, 8, 32, 31, NOW(), NOW());
+INSERT INTO price_statistics (brand_id, category_id, highest_price_product_id, lowest_price_product_id, highest_price, lowest_price, created_at, updated_at) VALUES
+(2, 1, 18, 17, 12500, 12200, NOW(), NOW()),
+(2, 2, 20, 19, 23800, 23200, NOW(), NOW()),
+(2, 3, 22, 21, 17750, 17300, NOW(), NOW()),
+(2, 4, 24, 23, 32600, 32200, NOW(), NOW()),
+(2, 5, 26, 25, 42850, 42200, NOW(), NOW()),
+(2, 6, 28, 27, 9500, 9200, NOW(), NOW()),
+(2, 7, 30, 29, 6300, 6100, NOW(), NOW()),
+(2, 8, 32, 31, 8500, 8200, NOW(), NOW());
 
 -- Brand Gamma
-INSERT INTO price_statistics (brand_id, category_id, highest_price_product_id, lowest_price_product_id, created_at, updated_at) VALUES
-(3, 1, 34, 33, NOW(), NOW()),
-(3, 2, 36, 35, NOW(), NOW()),
-(3, 3, 38, 37, NOW(), NOW()),
-(3, 4, 40, 39, NOW(), NOW()),
-(3, 5, 42, 41, NOW(), NOW()),
-(3, 6, 44, 43, NOW(), NOW()),
-(3, 7, 46, 45, NOW(), NOW()),
-(3, 8, 48, 47, NOW(), NOW());
+INSERT INTO price_statistics (brand_id, category_id, highest_price_product_id, lowest_price_product_id, highest_price, lowest_price, created_at, updated_at) VALUES
+(3, 1, 34, 33, 14500, 14200, NOW(), NOW()),
+(3, 2, 36, 35, 21800, 21200, NOW(), NOW()),
+(3, 3, 38, 37, 19750, 19300, NOW(), NOW()),
+(3, 4, 40, 39, 34600, 34200, NOW(), NOW()),
+(3, 5, 42, 41, 44850, 44200, NOW(), NOW()),
+(3, 6, 44, 43, 10500, 10200, NOW(), NOW()),
+(3, 7, 46, 45, 7300, 7100, NOW(), NOW()),
+(3, 8, 48, 47, 9500, 9200, NOW(), NOW());
 
 -- Brand Delta
-INSERT INTO price_statistics (brand_id, category_id, highest_price_product_id, lowest_price_product_id, created_at, updated_at) VALUES
-(4, 1, 50, 49, NOW(), NOW()),
-(4, 2, 52, 51, NOW(), NOW()),
-(4, 3, 54, 53, NOW(), NOW()),
-(4, 4, 56, 55, NOW(), NOW()),
-(4, 5, 58, 57, NOW(), NOW()),
-(4, 6, 60, 59, NOW(), NOW()),
-(4, 7, 62, 61, NOW(), NOW()),
-(4, 8, 64, 63, NOW(), NOW());
+INSERT INTO price_statistics (brand_id, category_id, highest_price_product_id, lowest_price_product_id, highest_price, lowest_price, created_at, updated_at) VALUES
+(4, 1, 50, 49, 16500, 16200, NOW(), NOW()),
+(4, 2, 52, 51, 22800, 22200, NOW(), NOW()),
+(4, 3, 54, 53, 20750, 20300, NOW(), NOW()),
+(4, 4, 56, 55, 36600, 36200, NOW(), NOW()),
+(4, 5, 58, 57, 46850, 46200, NOW(), NOW()),
+(4, 6, 60, 59, 11500, 11200, NOW(), NOW()),
+(4, 7, 62, 61, 8300, 8100, NOW(), NOW()),
+(4, 8, 64, 63, 10500, 10200, NOW(), NOW());
 
 -- Brand Epsilon
-INSERT INTO price_statistics (brand_id, category_id, highest_price_product_id, lowest_price_product_id, created_at, updated_at) VALUES
-(5, 1, 66, 65, NOW(), NOW()),
-(5, 2, 68, 67, NOW(), NOW()),
-(5, 3, 70, 69, NOW(), NOW()),
-(5, 4, 72, 71, NOW(), NOW()),
-(5, 5, 74, 73, NOW(), NOW()),
-(5, 6, 76, 75, NOW(), NOW()),
-(5, 7, 78, 77, NOW(), NOW()),
-(5, 8, 80, 79, NOW(), NOW());
+INSERT INTO price_statistics (brand_id, category_id, highest_price_product_id, lowest_price_product_id, highest_price, lowest_price, created_at, updated_at) VALUES
+(5, 1, 66, 65, 18500, 18200, NOW(), NOW()),
+(5, 2, 68, 67, 24800, 24200, NOW(), NOW()),
+(5, 3, 70, 69, 22750, 22300, NOW(), NOW()),
+(5, 4, 72, 71, 38600, 38200, NOW(), NOW()),
+(5, 5, 74, 73, 48850, 48200, NOW(), NOW()),
+(5, 6, 76, 75, 12500, 12200, NOW(), NOW()),
+(5, 7, 78, 77, 9300, 9100, NOW(), NOW()),
+(5, 8, 80, 79, 11500, 11200, NOW(), NOW());
 
 -- Brand Zeta
-INSERT INTO price_statistics (brand_id, category_id, highest_price_product_id, lowest_price_product_id, created_at, updated_at) VALUES
-(6, 1, 82, 81, NOW(), NOW()),
-(6, 2, 84, 83, NOW(), NOW()),
-(6, 3, 86, 85, NOW(), NOW()),
-(6, 4, 88, 87, NOW(), NOW()),
-(6, 5, 90, 89, NOW(), NOW()),
-(6, 6, 92, 91, NOW(), NOW()),
-(6, 7, 94, 93, NOW(), NOW()),
-(6, 8, 96, 95, NOW(), NOW());
+INSERT INTO price_statistics (brand_id, category_id, highest_price_product_id, lowest_price_product_id, highest_price, lowest_price, created_at, updated_at) VALUES
+(6, 1, 82, 81, 20500, 20200, NOW(), NOW()),
+(6, 2, 84, 83, 25800, 25200, NOW(), NOW()),
+(6, 3, 86, 85, 24750, 24300, NOW(), NOW()),
+(6, 4, 88, 87, 40600, 40200, NOW(), NOW()),
+(6, 5, 90, 89, 50850, 50200, NOW(), NOW()),
+(6, 6, 92, 91, 13500, 13200, NOW(), NOW()),
+(6, 7, 94, 93, 10300, 10100, NOW(), NOW()),
+(6, 8, 96, 95, 12500, 12200, NOW(), NOW());
 
 -- Brand Eta
-INSERT INTO price_statistics (brand_id, category_id, highest_price_product_id, lowest_price_product_id, created_at, updated_at) VALUES
-(7, 1, 98, 97, NOW(), NOW()),
-(7, 2, 100, 99, NOW(), NOW()),
-(7, 3, 102, 101, NOW(), NOW()),
-(7, 4, 104, 103, NOW(), NOW()),
-(7, 5, 106, 105, NOW(), NOW()),
-(7, 6, 108, 107, NOW(), NOW()),
-(7, 7, 110, 109, NOW(), NOW()),
-(7, 8, 112, 111, NOW(), NOW());
+INSERT INTO price_statistics (brand_id, category_id, highest_price_product_id, lowest_price_product_id, highest_price, lowest_price, created_at, updated_at) VALUES
+(7, 1, 98, 97, 22500, 22200, NOW(), NOW()),
+(7, 2, 100, 99, 27800, 27200, NOW(), NOW()),
+(7, 3, 102, 101, 26750, 26300, NOW(), NOW()),
+(7, 4, 104, 103, 42600, 42200, NOW(), NOW()),
+(7, 5, 106, 105, 52850, 52200, NOW(), NOW()),
+(7, 6, 108, 107, 14500, 14200, NOW(), NOW()),
+(7, 7, 110, 109, 11300, 11100, NOW(), NOW()),
+(7, 8, 112, 111, 13500, 13200, NOW(), NOW());
 
 -- Brand Theta
-INSERT INTO price_statistics (brand_id, category_id, highest_price_product_id, lowest_price_product_id, created_at, updated_at) VALUES
-(8, 1, 114, 113, NOW(), NOW()),
-(8, 2, 116, 115, NOW(), NOW()),
-(8, 3, 118, 117, NOW(), NOW()),
-(8, 4, 120, 119, NOW(), NOW()),
-(8, 5, 122, 121, NOW(), NOW()),
-(8, 6, 124, 123, NOW(), NOW()),
-(8, 7, 126, 125, NOW(), NOW()),
-(8, 8, 128, 127, NOW(), NOW());
+INSERT INTO price_statistics (brand_id, category_id, highest_price_product_id, lowest_price_product_id, highest_price, lowest_price, created_at, updated_at) VALUES
+(8, 1, 114, 113, 24500, 24200, NOW(), NOW()),
+(8, 2, 116, 115, 28800, 28200, NOW(), NOW()),
+(8, 3, 118, 117, 28750, 28300, NOW(), NOW()),
+(8, 4, 120, 119, 44600, 44200, NOW(), NOW()),
+(8, 5, 122, 121, 54850, 54200, NOW(), NOW()),
+(8, 6, 124, 123, 15500, 15200, NOW(), NOW()),
+(8, 7, 126, 125, 12300, 12100, NOW(), NOW()),
+(8, 8, 128, 127, 14500, 14200, NOW(), NOW());
 
 -- Brand Iota
-INSERT INTO price_statistics (brand_id, category_id, highest_price_product_id, lowest_price_product_id, created_at, updated_at) VALUES
-(9, 1, 130, 129, NOW(), NOW()),
-(9, 2, 132, 131, NOW(), NOW()),
-(9, 3, 134, 133, NOW(), NOW()),
-(9, 4, 136, 135, NOW(), NOW()),
-(9, 5, 138, 137, NOW(), NOW()),
-(9, 6, 140, 139, NOW(), NOW()),
-(9, 7, 142, 141, NOW(), NOW()),
-(9, 8, 144, 143, NOW(), NOW());
+INSERT INTO price_statistics (brand_id, category_id, highest_price_product_id, lowest_price_product_id, highest_price, lowest_price, created_at, updated_at) VALUES
+(9, 1, 130, 129, 26700, 26400, NOW(), NOW()),
+(9, 2, 132, 131, 29300, 28700, NOW(), NOW()),
+(9, 3, 134, 133, 32450, 32000, NOW(), NOW()),
+(9, 4, 136, 135, 45600, 45200, NOW(), NOW()),
+(9, 5, 138, 137, 53850, 53200, NOW(), NOW()),
+(9, 6, 140, 139, 17000, 16700, NOW(), NOW()),
+(9, 7, 142, 141, 14200, 14000, NOW(), NOW()),
+(9, 8, 144, 143, 15700, 15400, NOW(), NOW());
 
 -- Brand Kappa
-INSERT INTO price_statistics (brand_id, category_id, highest_price_product_id, lowest_price_product_id, created_at, updated_at) VALUES
-(10, 1, 146, 145, NOW(), NOW()),
-(10, 2, 148, 147, NOW(), NOW()),
-(10, 3, 150, 149, NOW(), NOW()),
-(10, 4, 152, 151, NOW(), NOW()),
-(10, 5, 154, 153, NOW(), NOW()),
-(10, 6, 156, 155, NOW(), NOW()),
-(10, 7, 158, 157, NOW(), NOW()),
-(10, 8, 160, 159, NOW(), NOW());
+INSERT INTO price_statistics (brand_id, category_id, highest_price_product_id, lowest_price_product_id, highest_price, lowest_price, created_at, updated_at) VALUES
+(10, 1, 146, 145, 28000, 27700, NOW(), NOW()),
+(10, 2, 148, 147, 31800, 31200, NOW(), NOW()),
+(10, 3, 150, 149, 31150, 30700, NOW(), NOW()),
+(10, 4, 152, 151, 47600, 47200, NOW(), NOW()),
+(10, 5, 154, 153, 59850, 59200, NOW(), NOW()),
+(10, 6, 156, 155, 17700, 17400, NOW(), NOW()),
+(10, 7, 158, 157, 14700, 14500, NOW(), NOW()),
+(10, 8, 160, 159, 16300, 16000, NOW(), NOW());
