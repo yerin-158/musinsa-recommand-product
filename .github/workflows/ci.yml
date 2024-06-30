@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - feature/musinsa
-      - feature/MUSINSA-39
 
 jobs:
   build:
