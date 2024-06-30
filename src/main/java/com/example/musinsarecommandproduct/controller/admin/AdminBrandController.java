@@ -1,9 +1,9 @@
 package com.example.musinsarecommandproduct.controller.admin;
 
-import com.example.musinsarecommandproduct.controller.admin.dto.AdminBrandAddRequest;
-import com.example.musinsarecommandproduct.controller.admin.dto.AdminBrandResponse;
+import com.example.musinsarecommandproduct.controller.admin.dto.*;
 import com.example.musinsarecommandproduct.service.admin.AdminBrandService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,12 +23,47 @@ public class AdminBrandController {
 
   @PostMapping
   public ResponseEntity<AdminBrandResponse> add(@RequestBody AdminBrandAddRequest request) {
-    return ResponseEntity.ok(new AdminBrandResponse());
+    return ResponseEntity.ok(null);
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<AdminBrandResponse> add(@PathVariable("id") Long id) {
-    return ResponseEntity.ok(new AdminBrandResponse());
+  public ResponseEntity<AdminBrandResponse> add(@PathVariable("id") Long brandId) {
+    return ResponseEntity.ok(null);
   }
+
+  @PostMapping("/{id}/products")
+  public ResponseEntity<AdminProductResponse> add(@PathVariable("id") Long brandId, @RequestBody AdminProductAddRequest request) {
+    return ResponseEntity.ok(null);
+  }
+
+  @GetMapping("/{id}/products/{productId}")
+  public ResponseEntity<AdminProductResponse> findOne(@PathVariable("id") Long brandId, @PathVariable("productId") Long productId) {
+    return ResponseEntity.ok(null);
+  }
+
+  @GetMapping("/{id}/products/{productId}/list")
+  public ResponseEntity<Page<AdminProductResponse>> findOne(
+      @PathVariable("id") Long brandId, @PathVariable("productId") Long productId,
+      @RequestParam(name = "page", defaultValue = "0") Integer page, @RequestParam(name = "size", defaultValue = "20") Integer size) {
+    return ResponseEntity.ok(null);
+  }
+
+  @PutMapping("/{id}/products/{productId}")
+  public ResponseEntity<AdminProductResponse> modify(@PathVariable("id") Long brandId, @PathVariable("productId") Long productId, @RequestBody AdminProductAddRequest request) {
+    return ResponseEntity.ok(null);
+  }
+
+  @PutMapping("/{id}/products/{productId}/status")
+  public ResponseEntity<AdminProductResponse> modify(@PathVariable("id") Long brandId, @PathVariable("productId") Long productId, @RequestBody AdminProductStatusModifyRequest request) {
+    return ResponseEntity.ok(null);
+  }
+
+  @DeleteMapping("/{id}/products/{productId}")
+  public ResponseEntity<AdminProductResponse> delete(@PathVariable("id") Long brandId, @PathVariable("productId") Long productId) {
+    return ResponseEntity.ok(null);
+  }
+
+
+
 
 }
