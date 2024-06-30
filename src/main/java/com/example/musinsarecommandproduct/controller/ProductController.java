@@ -19,11 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController("/api/v1/products")
 public class ProductController {
 
-  @GetMapping("/cheapest-set")
-  public ResponseEntity<ProductSetResponse> getCheapestProductSet(@Param("byBrand") Boolean byBrand) {
-    return ResponseEntity.ok(new ProductSetResponse());
-  }
-
   @GetMapping("/categories/{categoryId}/summary")
   public ResponseEntity<ProductByCategoryResponse> getProductsSummaryByCategory(
       @PathVariable("id") Long categoryId, @Param("priceType") PriceType priceType) {
