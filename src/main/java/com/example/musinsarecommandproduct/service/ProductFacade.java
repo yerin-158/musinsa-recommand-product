@@ -37,6 +37,10 @@ public class ProductFacade {
     return priceTypes.contains(priceType) ? priceStatisticsService.find(categoryId, priceType, size) : Collections.emptyList();
   }
 
+  public Map<Long, Product> getCheapProductByIdMap(List<PriceStatistics> cheapPriceStats) {
+    return this.getProductByIdMap(cheapPriceStats, Collections.emptyList());
+  }
+
   public Map<Long, Product> getProductByIdMap(List<PriceStatistics> cheapPriceStats, List<PriceStatistics> expensivePriceStats) {
     Set<Long> productIds = Stream.concat(
         cheapPriceStats.stream().map(PriceStatistics::getLowestPriceProductId),
@@ -50,6 +54,10 @@ public class ProductFacade {
     return stats.stream()
         .map(stat -> productById.get(idExtractor.apply(stat)))
         .collect(Collectors.toList());
+  }
+
+  public Map<Long, Brand> getCheapBrandByIdMap(List<PriceStatistics> cheapPriceStats) {
+    return this.getBrandByIdMap(cheapPriceStats, Collections.emptyList());
   }
 
   public Map<Long, Brand> getBrandByIdMap(List<PriceStatistics> cheapPriceStats, List<PriceStatistics> expensivePriceStats) {

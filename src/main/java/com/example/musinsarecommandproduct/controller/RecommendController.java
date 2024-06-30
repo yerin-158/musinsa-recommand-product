@@ -1,9 +1,12 @@
 package com.example.musinsarecommandproduct.controller;
 
 import com.example.musinsarecommandproduct.controller.dto.ProductSetResponse;
-import org.springframework.data.repository.query.Param;
+import com.example.musinsarecommandproduct.service.RecommendService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -13,11 +16,24 @@ import org.springframework.web.bind.annotation.RestController;
  * @version 6/30/24.
  * @implNote First created
  */
-@RestController("/api/v1/recommend")
+@RestController
+@RequestMapping("/api/v1/recommend")
+@RequiredArgsConstructor
 public class RecommendController {
 
+  private final RecommendService recommendService;
+
   @GetMapping("/cheapest-set")
-  public ResponseEntity<ProductSetResponse> getCheapestProductSet(@Param("byBrand") Boolean byBrand) {
+  public ResponseEntity<ProductSetResponse> getCheapestProductSet(@RequestParam("byBrand") Boolean byBrand, @RequestParam("brandId") Long brandId) {
+    if (byBrand && brandId == null) {
+      throw new RuntimeException();
+    }
+
+    if (byBrand) {
+      ProductSetResponse productSetResponse = recommendService.getProductSetByBrand(brandId);
+      return ResponseEntity.ok(productSetResponse);
+    }
+
     return ResponseEntity.ok(new ProductSetResponse(null, null));
   }
 

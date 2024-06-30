@@ -2,6 +2,7 @@ package com.example.musinsarecommandproduct.controller.mapper;
 
 import com.example.musinsarecommandproduct.controller.dto.ProductByCategoryResponse;
 import com.example.musinsarecommandproduct.controller.dto.ProductResponse;
+import com.example.musinsarecommandproduct.controller.dto.ProductSetResponse;
 import com.example.musinsarecommandproduct.controller.dto.ProductSimpleResponse;
 import com.example.musinsarecommandproduct.entitie.Brand;
 import com.example.musinsarecommandproduct.entitie.Category;
@@ -40,5 +41,12 @@ public interface ProductMapper {
       @Mapping(source = "expensiveProducts", target = "expensiveProducts")
   })
   ProductByCategoryResponse toProductByCategoryResponse(Category category, List<ProductResponse> cheapProducts, List<ProductResponse> expensiveProducts);
+
+
+  @Mappings({
+      @Mapping(source = "products", target = "products"),
+      @Mapping(source = "sumPrice", target = "sumPrice")
+  })
+  ProductSetResponse toProductSetResponse(List<ProductResponse> products, Long sumPrice);
 
 }

@@ -5,6 +5,8 @@ import com.example.musinsarecommandproduct.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by yerin-158 on 6/30/24.
  *
@@ -22,4 +24,7 @@ public class CategoryService {
     return categoryRepository.findById(id).orElseThrow(() -> new RuntimeException());
   }
 
+  public List<Category> findAll() {
+    return categoryRepository.findAll();
+  }
 }

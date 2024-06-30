@@ -16,4 +16,9 @@ public class PriceStatisticsSpecs {
     return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("categoryId"), categoryId);
   }
 
+
+  public static Specification<PriceStatistics> equalsBrandId(Long brandId) {
+    return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("brandId"), brandId);
+  }
+
 }
