@@ -10,5 +10,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @version 6/30/24.
  * @implNote First created
  */
-public interface ProductRepository extends JpaRepository<Long, Product> {
+public interface ProductRepository extends JpaRepository<Product, Long> {
 }
