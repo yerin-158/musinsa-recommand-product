@@ -26,4 +26,8 @@ public class PriceStatistics extends BaseEntity {
 
   private Long lowestPriceProductId;
 
+  private Integer highestPrice;
+
+  private Integer lowestPrice;
+
 }
