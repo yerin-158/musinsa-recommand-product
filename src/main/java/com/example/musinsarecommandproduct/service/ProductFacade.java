@@ -74,10 +74,4 @@ public class ProductFacade {
     return categoryService.findById(categoryId);
   }
 
-  public List<ProductResponse> mapProductsToProductResponses(List<Product> products, Category category, Map<Long, Brand> brandById) {
-    return products.stream()
-        .map(product -> ProductMapper.INSTANCE.toProductResponse(product, brandById.get(product.getBrandId()), category))
-        .collect(Collectors.toList());
-  }
-
 }

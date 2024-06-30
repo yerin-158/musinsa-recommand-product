@@ -72,4 +72,8 @@ public class PriceStatisticsService {
     return specification;
   }
 
+  public List<PriceStatistics> getLowestPriceProductsByCategory() {
+    return priceStatisticsRepository.findLowestPriceProductsByCategory();
+  }
+
 }

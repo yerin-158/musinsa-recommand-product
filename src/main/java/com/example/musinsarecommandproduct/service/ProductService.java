@@ -41,9 +41,6 @@ public class ProductService {
     List<Product> expensiveProducts = productFacade.findProducts(expensivePriceStats, productById, PriceStatistics::getHighestPriceProductId);
 
     Category category = productFacade.getCategory(categoryId);
-    List<ProductResponse> cheapProductResponses = productFacade.mapProductsToProductResponses(cheapProducts, category, brandById);
-    List<ProductResponse> expensiveProductResponses = productFacade.mapProductsToProductResponses(expensiveProducts, category, brandById);
-
-    return ProductMapper.INSTANCE.toProductByCategoryResponse(category, cheapProductResponses, expensiveProductResponses);
+    return ProductMapper.INSTANCE.toProductByCategoryResponse(category, cheapProducts, expensiveProducts, brandById);
   }
 }

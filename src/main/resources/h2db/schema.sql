@@ -43,3 +43,4 @@ CREATE TABLE price_statistics (
 );
 CREATE INDEX idx_price_statistics_brand_id ON price_statistics(brand_id);  -- 단일 인덱스
 CREATE INDEX idx_price_statistics_category_id ON price_statistics(category_id);  -- 단일 인덱스
+CREATE INDEX idx_category_lowest_price ON price_statistics (category_id, lowest_price);

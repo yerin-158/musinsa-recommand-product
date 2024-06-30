@@ -13,6 +13,8 @@ import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by yerin-158 on 6/30/24.
@@ -49,4 +51,22 @@ public interface ProductMapper {
   })
   ProductSetResponse toProductSetResponse(List<ProductResponse> products, Long sumPrice);
 
+  default ProductByCategoryResponse toProductByCategoryResponse(Category category, List<Product> cheapProducts, List<Product> expensiveProducts, Map<Long, Brand> brandById) {
+    List<ProductResponse> cheapProductResponses = toProductResponseList(cheapProducts, Map.of(category.getId(), category), brandById);
+    List<ProductResponse> expensiveProductResponses = toProductResponseList(expensiveProducts, Map.of(category.getId(), category), brandById);
+
+    return toProductByCategoryResponse(category, cheapProductResponses, expensiveProductResponses);
+  }
+
+  default ProductSetResponse toProductSetResponse(List<Product> products, Map<Long, Category> categoriesById, Map<Long, Brand> brandById) {
+    List<ProductResponse> productResponses = toProductResponseList(products, categoriesById, brandById);
+    Long sumPrice = products.stream().mapToLong(Product::getPrice).sum();
+    return toProductSetResponse(productResponses, sumPrice);
+  }
+
+  default List<ProductResponse> toProductResponseList(List<Product> products, Map<Long, Category> categoryById, Map<Long, Brand> brandById) {
+    return products.stream()
+        .map(product -> toProductResponse(product, brandById.get(product.getBrandId()), categoryById.get(product.getCategoryId())))
+        .collect(Collectors.toList());
+  }
 }

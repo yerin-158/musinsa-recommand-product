@@ -7,6 +7,7 @@ import com.example.musinsarecommandproduct.entitie.Brand;
 import com.example.musinsarecommandproduct.entitie.Category;
 import com.example.musinsarecommandproduct.entitie.PriceStatistics;
 import com.example.musinsarecommandproduct.entitie.Product;
+import com.example.musinsarecommandproduct.enums.PriceType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,21 +33,22 @@ public class RecommendService {
 
   public ProductSetResponse getProductSetByBrand(Long brandId) {
     List<PriceStatistics> priceStatistics = priceStatisticsService.retrieve(null, brandId);
+    return mapPriceStatisticsToProductSetResponse(priceStatistics);
+  }
+
+  public ProductSetResponse getCheapProductSet() {
+    List<PriceStatistics> cheapPriceStats = priceStatisticsService.getLowestPriceProductsByCategory();
+    return mapPriceStatisticsToProductSetResponse(cheapPriceStats);
+  }
+
+  private ProductSetResponse mapPriceStatisticsToProductSetResponse(List<PriceStatistics> priceStatistics) {
     Map<Long, Product> cheapProductsById = productFacade.getCheapProductByIdMap(priceStatistics);
     Map<Long, Brand> brandById = productFacade.getCheapBrandByIdMap(priceStatistics);
 
     List<Category> categories = categoryService.findAll();
     Map<Long, Category> categoriesById = categories.stream().collect(Collectors.toMap(Category::getId, Function.identity()));
 
-    List<ProductResponse> products = cheapProductsById.values().stream()
-        .map(product -> ProductMapper.INSTANCE.toProductResponse(product, brandById.get(product.getBrandId()), categoriesById.get(product.getCategoryId())))
-        .collect(Collectors.toList());
-
-    Long priceSum = cheapProductsById.values().stream()
-        .mapToLong(Product::getPrice)
-        .sum();
-
-    return ProductMapper.INSTANCE.toProductSetResponse(products, priceSum);
+    return ProductMapper.INSTANCE.toProductSetResponse(cheapProductsById.values().stream().toList(), categoriesById, brandById);
   }
 
 }
