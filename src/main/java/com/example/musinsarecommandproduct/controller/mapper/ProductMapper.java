@@ -1,5 +1,6 @@
 package com.example.musinsarecommandproduct.controller.mapper;
 
+import com.example.musinsarecommandproduct.controller.dto.ProductByCategoryResponse;
 import com.example.musinsarecommandproduct.controller.dto.ProductResponse;
 import com.example.musinsarecommandproduct.controller.dto.ProductSimpleResponse;
 import com.example.musinsarecommandproduct.entitie.Brand;
@@ -9,6 +10,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
+
+import java.util.List;
 
 /**
  * Created by yerin-158 on 6/30/24.
@@ -30,5 +33,12 @@ public interface ProductMapper {
       @Mapping(source = "category", target = "category")
   })
   ProductResponse toProductResponse(Product product, Brand brand, Category category);
+
+  @Mappings({
+      @Mapping(source = "category", target = "category"),
+      @Mapping(source = "cheapProducts", target = "cheapProducts"),
+      @Mapping(source = "expensiveProducts", target = "expensiveProducts")
+  })
+  ProductByCategoryResponse toProductByCategoryResponse(Category category, List<Product> cheapProducts, List<Product> expensiveProducts);
 
 }

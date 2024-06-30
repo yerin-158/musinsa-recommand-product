@@ -2,6 +2,7 @@ package com.example.musinsarecommandproduct.entitie;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import lombok.Getter;
 
 /**
  * Created by yerin-158 on 6/30/24.
@@ -11,7 +12,8 @@ import jakarta.persistence.Id;
  * @implNote First created
  */
 @Entity(name = "price_statistics")
-public class PriceStatistics extends BaseEntity{
+@Getter
+public class PriceStatistics extends BaseEntity {
 
   @Id
   private Long id;
