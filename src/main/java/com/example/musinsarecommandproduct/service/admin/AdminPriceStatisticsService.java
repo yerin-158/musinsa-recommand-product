@@ -27,63 +27,46 @@ public class AdminPriceStatisticsService {
   private final PriceStatisticsRepository priceStatisticsRepository;
   private final ProductRepository productRepository;
 
-  public void updateDueToExposedChange(Product product) {
+  public void updatePriceStatistics(Product product) {
     Specification<PriceStatistics> specification = Specification
         .where(PriceStatisticsSpecs.equalsBrandId(product.getBrandId()))
         .and(PriceStatisticsSpecs.equalsCategoryId(product.getCategoryId()));
     Optional<PriceStatistics> nowPriceStatisticsOptional = priceStatisticsRepository.findOne(specification);
+
     if (nowPriceStatisticsOptional.isEmpty()) {
       PriceStatistics newPriceStatistics = PriceStatistics.createFirst(product);
       priceStatisticsRepository.save(newPriceStatistics);
-    } else {
-      PriceStatistics nowPriceStatistics = nowPriceStatisticsOptional.get();
-
-      // 처음 insert 할 때 반드시 채워서 넣기때문에 null인 것 있으면 버그임
-      if (nowPriceStatistics.getLowestPrice() == null || nowPriceStatistics.getHighestPrice() == null) {
-        throw new RuntimeException();
-      }
-
-      if (product.isPriceLowerThan(nowPriceStatistics.getLowestPrice())) {
-        nowPriceStatistics.updateLowest(product);
-      }
-
-      if (product.isPriceHigherThan(nowPriceStatistics.getHighestPrice())) {
-        nowPriceStatistics.updateHighest(product);
-      }
-
-      priceStatisticsRepository.save(nowPriceStatistics);
-    }
-  }
-
-  /**
-   * 비노출로 변경된 경우
-   * @param updatedProduct
-   */
-  public void updateDueToNotExposedChange(Product updatedProduct) {
-    Specification<PriceStatistics> specification = Specification
-        .where(PriceStatisticsSpecs.equalsBrandId(updatedProduct.getBrandId()))
-        .and(PriceStatisticsSpecs.equalsCategoryId(updatedProduct.getCategoryId()));
-    PriceStatistics nowPriceStatistics = priceStatisticsRepository.findOne(specification).orElseThrow(() -> new RuntimeException());
-
-    if (updatedProduct.isPriceLowerThan(nowPriceStatistics.getLowestPriceProductId())) {
-      updateLowestPriceProduct(nowPriceStatistics);
+      return;
     }
 
-    if (updatedProduct.isPriceHigherThan(nowPriceStatistics.getHighestPriceProductId())) {
-      updateHighestPriceProduct(nowPriceStatistics);
+    PriceStatistics nowPriceStatistics = nowPriceStatisticsOptional.get();
+    // 처음 insert 할 때 반드시 채워서 넣기때문에 null인 것 있으면 버그임
+    if (nowPriceStatistics.getLowestPrice() == null || nowPriceStatistics.getHighestPrice() == null) {
+      throw new RuntimeException();
+    }
+
+    if (product.isExposed() && product.isPriceLowerThan(nowPriceStatistics.getLowestPrice())) {
+      nowPriceStatistics.updateLowest(product);
+    } else if (product.isPriceLowestProduct(nowPriceStatistics.getLowestPriceProductId()) && product.isPriceHigherThan(nowPriceStatistics.getLowestPrice())) {
+      updateLowestPriceProductStatistics(nowPriceStatistics);
+    }
+
+    if (product.isExposed() && product.isPriceHigherThan(nowPriceStatistics.getHighestPrice())) {
+      nowPriceStatistics.updateHighest(product);
+    } else if (product.isPriceHighestProduct(nowPriceStatistics.getHighestPriceProductId()) && product.isPriceLowerThan(nowPriceStatistics.getHighestPrice())) {
+      updateHighestPriceProductStatistics(nowPriceStatistics);
     }
 
     priceStatisticsRepository.save(nowPriceStatistics);
   }
-
-  private void updateLowestPriceProduct(PriceStatistics nowPriceStatistics) {
-    List<Product> lowestProducts = productRepository.findProductsByMinPriceInEachBrandCategoryGroup();
+  private void updateLowestPriceProductStatistics(PriceStatistics nowPriceStatistics) {
+    List<Product> lowestProducts = productRepository.findCheapestProductByBrandAndCategory(nowPriceStatistics.getBrandId(), nowPriceStatistics.getCategoryId());
     Product newLowestProduct = getNewProductWithMaxId(lowestProducts);
     nowPriceStatistics.updateLowest(newLowestProduct);
   }
 
-  private void updateHighestPriceProduct(PriceStatistics nowPriceStatistics) {
-    List<Product> highestProducts = productRepository.findProductsByMaxPriceInEachBrandCategoryGroup();
+  private void updateHighestPriceProductStatistics(PriceStatistics nowPriceStatistics) {
+    List<Product> highestProducts = productRepository.findMostExpensiveProductByBrandAndCategory(nowPriceStatistics.getBrandId(), nowPriceStatistics.getCategoryId());
     Product newHighestProduct = getNewProductWithMaxId(highestProducts);
     nowPriceStatistics.updateHighest(newHighestProduct);
   }
@@ -91,11 +74,13 @@ public class AdminPriceStatisticsService {
   private Product getNewProductWithMaxId(List<Product> products) {
     if (products.size() == 1) {
       return products.get(0);
-    } else {
-      return products.stream()
-          .sorted((p1, p2) -> Long.compare(p2.getId(), p1.getId())) // ID 내림차순 정렬
-          .collect(Collectors.toList())
-          .get(0);
     }
+
+    return products.stream()
+        .sorted((p1, p2) -> Long.compare(p2.getId(), p1.getId())) // ID 내림차순 정렬
+        .collect(Collectors.toList())
+        .get(0);
   }
+
+
 }

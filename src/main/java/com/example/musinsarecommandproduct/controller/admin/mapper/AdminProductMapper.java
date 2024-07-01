@@ -1,9 +1,6 @@
 package com.example.musinsarecommandproduct.controller.admin.mapper;
 
-import com.example.musinsarecommandproduct.controller.admin.dto.AdminProductAddRequest;
-import com.example.musinsarecommandproduct.controller.admin.dto.AdminProductResponse;
-import com.example.musinsarecommandproduct.controller.admin.dto.AdminProductStatusModifyRequest;
-import com.example.musinsarecommandproduct.controller.admin.dto.AdminSimpleProductResponse;
+import com.example.musinsarecommandproduct.controller.admin.dto.*;
 import com.example.musinsarecommandproduct.entitie.Brand;
 import com.example.musinsarecommandproduct.entitie.Category;
 import com.example.musinsarecommandproduct.entitie.Product;
@@ -39,5 +36,11 @@ public interface AdminProductMapper {
       @Mapping(source = "category", target = "category")
   })
   AdminProductResponse toAdminProductResponse(Product product, Brand brand, Category category);
+
+  @Mappings({
+      @Mapping(target = "name", source = "request.name"),
+      @Mapping(target = "price", source = "request.price")
+  })
+  Product toProduct(@MappingTarget Product product, AdminProductModifyRequest request);
 
 }

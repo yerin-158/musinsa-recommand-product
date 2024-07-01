@@ -30,7 +30,7 @@ public class Product extends BaseEntity{
   @Enumerated(EnumType.STRING)
   private ProductStatus status;
 
-  public boolean isPriceLowerThan(Long lowestPriceProductId) {
+  public boolean isPriceLowestProduct(Long lowestPriceProductId) {
     return this.id.equals(lowestPriceProductId);
   }
 
@@ -38,12 +38,16 @@ public class Product extends BaseEntity{
     return this.price < lowestPrice;
   }
 
-  public boolean isPriceHigherThan(Long highestPriceProductId) {
+  public boolean isPriceHighestProduct(Long highestPriceProductId) {
     return this.id.equals(highestPriceProductId);
   }
 
   public boolean isPriceHigherThan(Integer highestPrice) {
     return this.price > highestPrice;
+  }
+
+  public boolean isExposed() {
+    return this.status.isExposed();
   }
 
 }

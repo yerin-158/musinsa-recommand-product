@@ -1,6 +1,7 @@
 package com.example.musinsarecommandproduct.service.admin;
 
 import com.example.musinsarecommandproduct.controller.admin.dto.AdminProductAddRequest;
+import com.example.musinsarecommandproduct.controller.admin.dto.AdminProductModifyRequest;
 import com.example.musinsarecommandproduct.controller.admin.dto.AdminProductResponse;
 import com.example.musinsarecommandproduct.controller.admin.dto.AdminProductStatusModifyRequest;
 import com.example.musinsarecommandproduct.controller.admin.mapper.AdminProductMapper;
@@ -40,7 +41,7 @@ public class AdminProductService {
 
     Product product = AdminProductMapper.INSTANCE.toProduct(request, brandId);
     productRepository.save(product);
-    adminPriceStatisticsService.updateDueToExposedChange(product);
+    adminPriceStatisticsService.updatePriceStatistics(product);
 
     return AdminProductMapper.INSTANCE.toAdminProductResponse(product, targetBrand, category);
   }
@@ -49,6 +50,7 @@ public class AdminProductService {
   public AdminProductResponse modifyStatus(Long brandId, Long productId, AdminProductStatusModifyRequest request) {
     Brand brand = brandRepository.findById(brandId).orElseThrow(() -> new RuntimeException());
     Product target = productRepository.findById(productId).orElseThrow(() -> new RuntimeException());
+    Category category = categoryRepository.findById(target.getCategoryId()).orElseThrow(() -> new RuntimeException());
 
     Specification<Product> specification = Specification.where(ProductSpecs.equalsCategoryId(target.getCategoryId()));
     Long count = productRepository.count(specification);
@@ -63,16 +65,27 @@ public class AdminProductService {
     productRepository.save(updated);
 
     if (changeViewable) {
-      if (request.status().isExposed()) {
-        // 노출로 변경된 경우
-        adminPriceStatisticsService.updateDueToExposedChange(updated);
-      } else {
-        // 비노출로 변경된 경우
-        adminPriceStatisticsService.updateDueToNotExposedChange(updated);
-      }
+      adminPriceStatisticsService.updatePriceStatistics(updated);
     }
 
+    return AdminProductMapper.INSTANCE.toAdminProductResponse(updated, brand, category);
+  }
+
+  @Transactional
+  public AdminProductResponse modifyDetails(Long brandId, Long productId, AdminProductModifyRequest request) {
+    Brand brand = brandRepository.findById(brandId).orElseThrow(() -> new RuntimeException());
+    Product target = productRepository.findById(productId).orElseThrow(() -> new RuntimeException());
     Category category = categoryRepository.findById(target.getCategoryId()).orElseThrow(() -> new RuntimeException());
+
+    Boolean changePrice = !target.getPrice().equals(request.price());
+
+    Product updated = AdminProductMapper.INSTANCE.toProduct(target, request);
+    productRepository.save(updated);
+
+    if (changePrice) {
+      adminPriceStatisticsService.updatePriceStatistics(updated);
+    }
+
     return AdminProductMapper.INSTANCE.toAdminProductResponse(updated, brand, category);
   }
 
