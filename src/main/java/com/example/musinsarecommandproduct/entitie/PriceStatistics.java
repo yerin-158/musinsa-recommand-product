@@ -2,7 +2,9 @@ package com.example.musinsarecommandproduct.entitie;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * Created by yerin-158 on 6/30/24.
@@ -13,6 +15,7 @@ import lombok.Getter;
  */
 @Entity(name = "price_statistics")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PriceStatistics extends BaseEntity {
 
   @Id
@@ -29,5 +32,26 @@ public class PriceStatistics extends BaseEntity {
   private Integer highestPrice;
 
   private Integer lowestPrice;
+
+  public static PriceStatistics createFirst(Product product) {
+    PriceStatistics priceStatistics = new PriceStatistics();
+    priceStatistics.brandId = product.getBrandId();
+    priceStatistics.categoryId = product.getCategoryId();
+    priceStatistics.highestPriceProductId = product.getId();
+    priceStatistics.lowestPriceProductId = product.getId();
+    priceStatistics.highestPrice = product.getPrice();
+    priceStatistics.lowestPrice = product.getPrice();
+    return priceStatistics;
+  }
+
+  public void updateHighest(Product product) {
+    this.highestPriceProductId = product.getId();
+    this.highestPrice = product.getPrice();
+  }
+
+  public void updateLowest(Product product) {
+    this.lowestPriceProductId = product.getId();
+    this.lowestPrice = product.getPrice();
+  }
 
 }

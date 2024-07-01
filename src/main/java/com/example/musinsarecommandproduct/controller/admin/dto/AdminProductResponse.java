@@ -7,5 +7,4 @@ package com.example.musinsarecommandproduct.controller.admin.dto;
  * @version 6/30/24.
  * @implNote First created
  */
-public class AdminProductResponse {
-}
+public record AdminProductResponse(AdminSimpleProductResponse product, AdminBrandResponse brand, AdminCategoryResponse category) {}

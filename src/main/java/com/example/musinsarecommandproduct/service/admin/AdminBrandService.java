@@ -2,10 +2,17 @@ package com.example.musinsarecommandproduct.service.admin;
 
 import com.example.musinsarecommandproduct.controller.admin.dto.AdminBrandAddRequest;
 import com.example.musinsarecommandproduct.controller.admin.dto.AdminBrandResponse;
+import com.example.musinsarecommandproduct.controller.admin.dto.AdminProductAddRequest;
+import com.example.musinsarecommandproduct.controller.admin.dto.AdminProductResponse;
 import com.example.musinsarecommandproduct.controller.admin.mapper.AdminBrandMapper;
+import com.example.musinsarecommandproduct.controller.admin.mapper.AdminProductMapper;
 import com.example.musinsarecommandproduct.entitie.Brand;
+import com.example.musinsarecommandproduct.entitie.Category;
+import com.example.musinsarecommandproduct.entitie.Product;
 import com.example.musinsarecommandproduct.entitie.specs.BrandSpecs;
 import com.example.musinsarecommandproduct.repository.BrandRepository;
+import com.example.musinsarecommandproduct.repository.CategoryRepository;
+import com.example.musinsarecommandproduct.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.data.jpa.domain.Specification;

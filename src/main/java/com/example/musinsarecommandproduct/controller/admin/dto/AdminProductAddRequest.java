@@ -1,5 +1,7 @@
 package com.example.musinsarecommandproduct.controller.admin.dto;
 
+import com.example.musinsarecommandproduct.enums.ProductStatus;
+
 /**
  * Created by yerin-158 on 6/30/24.
  *
@@ -7,5 +9,4 @@ package com.example.musinsarecommandproduct.controller.admin.dto;
  * @version 6/30/24.
  * @implNote First created
  */
-public class AdminProductAddRequest {
-}
+public record AdminProductAddRequest(Long categoryId, String name, Integer price, ProductStatus status) {}

@@ -1,11 +1,9 @@
 package com.example.musinsarecommandproduct.entitie;
 
 import com.example.musinsarecommandproduct.enums.ProductStatus;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Created by yerin-158 on 6/30/24.
@@ -16,9 +14,11 @@ import lombok.Getter;
  */
 @Entity(name = "products")
 @Getter
+@Setter
 public class Product extends BaseEntity{
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   private Long brandId;
