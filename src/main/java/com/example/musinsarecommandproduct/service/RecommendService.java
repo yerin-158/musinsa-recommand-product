@@ -34,19 +34,19 @@ public class RecommendService {
     return mapPriceStatisticsToProductSetResponse(priceStatistics);
   }
 
-  public ProductSetResponse getCheapProductSet() {
-    List<PriceStatistics> cheapPriceStats = priceStatisticsService.getLowestPriceProductsByCategory();
-    return mapPriceStatisticsToProductSetResponse(cheapPriceStats);
+  public ProductSetResponse getLowestPriceProductSet() {
+    List<PriceStatistics> lowestPriceStats = priceStatisticsService.getLowestPriceProductsByCategory();
+    return mapPriceStatisticsToProductSetResponse(lowestPriceStats);
   }
 
   private ProductSetResponse mapPriceStatisticsToProductSetResponse(List<PriceStatistics> priceStatistics) {
-    Map<Long, Product> cheapProductsById = productFacade.getCheapProductByIdMap(priceStatistics);
-    Map<Long, Brand> brandById = productFacade.getCheapBrandByIdMap(priceStatistics);
+    Map<Long, Product> lowestPriceProductsById = productFacade.getLowestPriceProductByIdMap(priceStatistics);
+    Map<Long, Brand> brandById = productFacade.getLowestPriceBrandByIdMap(priceStatistics);
 
     List<Category> categories = categoryService.findAll();
     Map<Long, Category> categoriesById = categories.stream().collect(Collectors.toMap(Category::getId, Function.identity()));
 
-    return ProductMapper.INSTANCE.toProductSetResponse(cheapProductsById.values().stream().toList(), categoriesById, brandById);
+    return ProductMapper.INSTANCE.toProductSetResponse(lowestPriceProductsById.values().stream().toList(), categoriesById, brandById);
   }
 
 }

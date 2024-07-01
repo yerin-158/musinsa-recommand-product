@@ -39,10 +39,10 @@ public interface ProductMapper {
 
   @Mappings({
       @Mapping(source = "category", target = "category"),
-      @Mapping(source = "cheapProducts", target = "cheapProducts"),
-      @Mapping(source = "expensiveProducts", target = "expensiveProducts")
+      @Mapping(source = "lowestPriceProducts", target = "lowestPriceProducts"),
+      @Mapping(source = "highestPriceProducts", target = "highestPriceProducts")
   })
-  ProductByCategoryResponse toProductByCategoryResponse(Category category, List<ProductResponse> cheapProducts, List<ProductResponse> expensiveProducts);
+  ProductByCategoryResponse toProductByCategoryResponse(Category category, List<ProductResponse> lowestPriceProducts, List<ProductResponse> highestPriceProducts);
 
 
   @Mappings({
@@ -51,11 +51,11 @@ public interface ProductMapper {
   })
   ProductSetResponse toProductSetResponse(List<ProductResponse> products, Long sumPrice);
 
-  default ProductByCategoryResponse toProductByCategoryResponse(Category category, List<Product> cheapProducts, List<Product> expensiveProducts, Map<Long, Brand> brandById) {
-    List<ProductResponse> cheapProductResponses = toProductResponseList(cheapProducts, Map.of(category.getId(), category), brandById);
-    List<ProductResponse> expensiveProductResponses = toProductResponseList(expensiveProducts, Map.of(category.getId(), category), brandById);
+  default ProductByCategoryResponse toProductByCategoryResponse(Category category, List<Product> lowestPriceProducts, List<Product> highestPriceProducts, Map<Long, Brand> brandById) {
+    List<ProductResponse> lowestPriceProductResponses = toProductResponseList(lowestPriceProducts, Map.of(category.getId(), category), brandById);
+    List<ProductResponse> highestPriceProductResponses = toProductResponseList(highestPriceProducts, Map.of(category.getId(), category), brandById);
 
-    return toProductByCategoryResponse(category, cheapProductResponses, expensiveProductResponses);
+    return toProductByCategoryResponse(category, lowestPriceProductResponses, highestPriceProductResponses);
   }
 
   default ProductSetResponse toProductSetResponse(List<Product> products, Map<Long, Category> categoriesById, Map<Long, Brand> brandById) {

@@ -9,8 +9,8 @@ package com.example.musinsarecommandproduct.enums;
  */
 public enum PriceType {
 
-  CHEAP,
-  EXPENSIVE,
+  LOW,
+  HIGH,
   ;
 
 }

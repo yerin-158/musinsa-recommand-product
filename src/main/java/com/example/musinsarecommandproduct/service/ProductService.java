@@ -1,21 +1,16 @@
 package com.example.musinsarecommandproduct.service;
 
 import com.example.musinsarecommandproduct.controller.dto.ProductByCategoryResponse;
-import com.example.musinsarecommandproduct.controller.dto.ProductResponse;
 import com.example.musinsarecommandproduct.controller.mapper.ProductMapper;
 import com.example.musinsarecommandproduct.entitie.Brand;
 import com.example.musinsarecommandproduct.entitie.Category;
 import com.example.musinsarecommandproduct.entitie.PriceStatistics;
 import com.example.musinsarecommandproduct.entitie.Product;
 import com.example.musinsarecommandproduct.enums.PriceType;
-import com.example.musinsarecommandproduct.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by yerin-158 on 6/30/24.
@@ -31,16 +26,16 @@ public class ProductService {
   private final ProductFacade productFacade;
 
   public ProductByCategoryResponse getProductByCategory(Long categoryId, List<PriceType> priceTypes, Integer size) {
-    List<PriceStatistics> cheapPriceStats = productFacade.getPriceStatistics(categoryId, priceTypes, PriceType.CHEAP, size);
-    List<PriceStatistics> expensivePriceStats = productFacade.getPriceStatistics(categoryId, priceTypes, PriceType.EXPENSIVE, size);
+    List<PriceStatistics> lowestPriceStats = productFacade.getPriceStatistics(categoryId, priceTypes, PriceType.LOW, size);
+    List<PriceStatistics> highestPriceStats = productFacade.getPriceStatistics(categoryId, priceTypes, PriceType.HIGH, size);
 
-    Map<Long, Product> productById = productFacade.getProductByIdMap(cheapPriceStats, expensivePriceStats);
-    Map<Long, Brand> brandById = productFacade.getBrandByIdMap(cheapPriceStats, expensivePriceStats);
+    Map<Long, Product> productById = productFacade.getProductByIdMap(lowestPriceStats, highestPriceStats);
+    Map<Long, Brand> brandById = productFacade.getBrandByIdMap(lowestPriceStats, highestPriceStats);
 
-    List<Product> cheapProducts = productFacade.findProducts(cheapPriceStats, productById, PriceStatistics::getLowestPriceProductId);
-    List<Product> expensiveProducts = productFacade.findProducts(expensivePriceStats, productById, PriceStatistics::getHighestPriceProductId);
+    List<Product> lowestPriceProducts = productFacade.findProducts(lowestPriceStats, productById, PriceStatistics::getLowestPriceProductId);
+    List<Product> highestPriceProducts = productFacade.findProducts(highestPriceStats, productById, PriceStatistics::getHighestPriceProductId);
 
     Category category = productFacade.getCategory(categoryId);
-    return ProductMapper.INSTANCE.toProductByCategoryResponse(category, cheapProducts, expensiveProducts, brandById);
+    return ProductMapper.INSTANCE.toProductByCategoryResponse(category, lowestPriceProducts, highestPriceProducts, brandById);
   }
 }

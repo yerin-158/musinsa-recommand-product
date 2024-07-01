@@ -32,11 +32,11 @@ public class PriceStatisticsService {
       throw new RuntimeException();
     }
 
-    if (priceType.equals(PriceType.CHEAP)) {
+    if (priceType.equals(PriceType.LOW)) {
       return this.retrieve(categoryId, null, size, Sort.by(Sort.Direction.ASC, "lowestPrice"));
     }
 
-    if (priceType.equals(PriceType.EXPENSIVE)) {
+    if (priceType.equals(PriceType.HIGH)) {
       return this.retrieve(categoryId, null, size, Sort.by(Sort.Direction.DESC, "highestPrice"));
     }
     return new ArrayList<>();

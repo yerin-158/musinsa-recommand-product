@@ -1,7 +1,6 @@
 package com.example.musinsarecommandproduct.repository;
 
 import com.example.musinsarecommandproduct.entitie.Product;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -34,7 +33,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
       "WHERE p.status = 'EXPOSED' " +
       "AND p.brand_id = :brandId " +
       "AND p.category_id = :categoryId", nativeQuery = true)
-  List<Product> findCheapestProductByBrandAndCategory(@Param("brandId") Long brandId, @Param("categoryId") Long categoryId);
+  List<Product> findLowestPriceProductByBrandAndCategory(@Param("brandId") Long brandId, @Param("categoryId") Long categoryId);
 
   @Query(value = "SELECT p.* " +
       "FROM products p " +
@@ -52,6 +51,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
       "WHERE p.status = 'EXPOSED' " +
       "AND p.brand_id = :brandId " +
       "AND p.category_id = :categoryId", nativeQuery = true)
-  List<Product> findMostExpensiveProductByBrandAndCategory(@Param("brandId") Long brandId, @Param("categoryId") Long categoryId);
+  List<Product> findHighestProductByBrandAndCategory(@Param("brandId") Long brandId, @Param("categoryId") Long categoryId);
 
 }

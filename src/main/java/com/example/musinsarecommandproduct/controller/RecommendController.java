@@ -23,8 +23,8 @@ public class RecommendController {
 
   private final RecommendService recommendService;
 
-  @GetMapping("/cheapest-set")
-  public ResponseEntity<ProductSetResponse> getCheapestProductSet(@RequestParam("byBrand") Boolean byBrand, @RequestParam(name = "brandId", required = false) Long brandId) {
+  @GetMapping("/lowest-price-set")
+  public ResponseEntity<ProductSetResponse> getLowestPriceProductSet(@RequestParam("byBrand") Boolean byBrand, @RequestParam(name = "brandId", required = false) Long brandId) {
     if (byBrand && brandId == null) {
       throw new RuntimeException();
     }
@@ -34,7 +34,7 @@ public class RecommendController {
       return ResponseEntity.ok(productSetResponse);
     }
 
-    ProductSetResponse productSetResponse = recommendService.getCheapProductSet();
+    ProductSetResponse productSetResponse = recommendService.getLowestPriceProductSet();
     return ResponseEntity.ok(productSetResponse);
   }
 

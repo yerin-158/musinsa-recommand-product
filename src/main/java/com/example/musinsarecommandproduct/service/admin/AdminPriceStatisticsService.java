@@ -60,13 +60,13 @@ public class AdminPriceStatisticsService {
     priceStatisticsRepository.save(nowPriceStatistics);
   }
   private void updateLowestPriceProductStatistics(PriceStatistics nowPriceStatistics) {
-    List<Product> lowestProducts = productRepository.findCheapestProductByBrandAndCategory(nowPriceStatistics.getBrandId(), nowPriceStatistics.getCategoryId());
+    List<Product> lowestProducts = productRepository.findLowestPriceProductByBrandAndCategory(nowPriceStatistics.getBrandId(), nowPriceStatistics.getCategoryId());
     Product newLowestProduct = getNewProductWithMaxId(lowestProducts);
     nowPriceStatistics.updateLowest(newLowestProduct);
   }
 
   private void updateHighestPriceProductStatistics(PriceStatistics nowPriceStatistics) {
-    List<Product> highestProducts = productRepository.findMostExpensiveProductByBrandAndCategory(nowPriceStatistics.getBrandId(), nowPriceStatistics.getCategoryId());
+    List<Product> highestProducts = productRepository.findHighestProductByBrandAndCategory(nowPriceStatistics.getBrandId(), nowPriceStatistics.getCategoryId());
     Product newHighestProduct = getNewProductWithMaxId(highestProducts);
     nowPriceStatistics.updateHighest(newHighestProduct);
   }

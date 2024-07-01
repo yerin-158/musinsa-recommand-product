@@ -9,5 +9,5 @@ import java.util.List;
  * @version 6/30/24.
  * @implNote First created
  */
-public record ProductByCategoryResponse(CategorySimpleResponse category, List<ProductResponse> cheapProducts, List<ProductResponse> expensiveProducts) {
+public record ProductByCategoryResponse(CategorySimpleResponse category, List<ProductResponse> lowestPriceProducts, List<ProductResponse> highestPriceProducts) {
 }

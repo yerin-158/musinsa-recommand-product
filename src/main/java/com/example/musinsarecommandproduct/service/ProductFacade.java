@@ -1,7 +1,5 @@
 package com.example.musinsarecommandproduct.service;
 
-import com.example.musinsarecommandproduct.controller.dto.ProductResponse;
-import com.example.musinsarecommandproduct.controller.mapper.ProductMapper;
 import com.example.musinsarecommandproduct.entitie.Brand;
 import com.example.musinsarecommandproduct.entitie.Category;
 import com.example.musinsarecommandproduct.entitie.PriceStatistics;
@@ -37,14 +35,14 @@ public class ProductFacade {
     return priceTypes.contains(priceType) ? priceStatisticsService.find(categoryId, priceType, size) : Collections.emptyList();
   }
 
-  public Map<Long, Product> getCheapProductByIdMap(List<PriceStatistics> cheapPriceStats) {
-    return this.getProductByIdMap(cheapPriceStats, Collections.emptyList());
+  public Map<Long, Product> getLowestPriceProductByIdMap(List<PriceStatistics> lowestPriceStats) {
+    return this.getProductByIdMap(lowestPriceStats, Collections.emptyList());
   }
 
-  public Map<Long, Product> getProductByIdMap(List<PriceStatistics> cheapPriceStats, List<PriceStatistics> expensivePriceStats) {
+  public Map<Long, Product> getProductByIdMap(List<PriceStatistics> lowestPriceStats, List<PriceStatistics> highestPriceStats) {
     Set<Long> productIds = Stream.concat(
-        cheapPriceStats.stream().map(PriceStatistics::getLowestPriceProductId),
-        expensivePriceStats.stream().map(PriceStatistics::getHighestPriceProductId)
+        lowestPriceStats.stream().map(PriceStatistics::getLowestPriceProductId),
+        highestPriceStats.stream().map(PriceStatistics::getHighestPriceProductId)
     ).collect(Collectors.toSet());
     List<Product> products = productRepository.findAllById(productIds);
     return products.stream().collect(Collectors.toMap(Product::getId, Function.identity()));
@@ -56,14 +54,14 @@ public class ProductFacade {
         .collect(Collectors.toList());
   }
 
-  public Map<Long, Brand> getCheapBrandByIdMap(List<PriceStatistics> cheapPriceStats) {
-    return this.getBrandByIdMap(cheapPriceStats, Collections.emptyList());
+  public Map<Long, Brand> getLowestPriceBrandByIdMap(List<PriceStatistics> lowestPriceStats) {
+    return this.getBrandByIdMap(lowestPriceStats, Collections.emptyList());
   }
 
-  public Map<Long, Brand> getBrandByIdMap(List<PriceStatistics> cheapPriceStats, List<PriceStatistics> expensivePriceStats) {
+  public Map<Long, Brand> getBrandByIdMap(List<PriceStatistics> lowestPriceStats, List<PriceStatistics> highestPriceStats) {
     Set<Long> brandIds = Stream.concat(
-        cheapPriceStats.stream().map(PriceStatistics::getBrandId),
-        expensivePriceStats.stream().map(PriceStatistics::getBrandId)
+        lowestPriceStats.stream().map(PriceStatistics::getBrandId),
+        highestPriceStats.stream().map(PriceStatistics::getBrandId)
     ).collect(Collectors.toSet());
 
     List<Brand> brands = brandService.findAllById(brandIds);
