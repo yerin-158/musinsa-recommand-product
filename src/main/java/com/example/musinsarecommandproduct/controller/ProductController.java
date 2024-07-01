@@ -26,9 +26,9 @@ public class ProductController {
 
   private final ProductService productService;
 
-  @GetMapping("/categories/{categoryId}/summary")
+  @GetMapping("/summary")
   public ResponseEntity<ProductByCategoryResponse> getProductsSummaryByCategory(
-      @PathVariable("categoryId") Long categoryId,
+      @RequestParam("categoryId") Long categoryId,
       @RequestParam("priceType") List<PriceType> priceTypes,
       @RequestParam(value = "size", required = false, defaultValue = "1") Integer size) {
 
