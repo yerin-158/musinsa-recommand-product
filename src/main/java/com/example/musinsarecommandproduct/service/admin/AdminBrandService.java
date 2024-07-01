@@ -42,4 +42,9 @@ public class AdminBrandService {
     return AdminBrandMapper.INSTANCE.toAdminBrandResponse(newBrand);
   }
 
+  public AdminBrandResponse findOne(Long id) {
+    Brand brand = brandRepository.findById(id).orElseThrow(() -> new RuntimeException());
+    return AdminBrandMapper.INSTANCE.toAdminBrandResponse(brand);
+  }
+
 }

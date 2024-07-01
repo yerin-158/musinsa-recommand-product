@@ -31,7 +31,8 @@ public class AdminBrandController {
 
   @GetMapping("/{id}")
   public ResponseEntity<AdminBrandResponse> add(@PathVariable("id") Long brandId) {
-    return ResponseEntity.ok(null);
+    AdminBrandResponse response = adminBrandService.findOne(brandId);
+    return ResponseEntity.ok(response);
   }
 
   @PostMapping("/{id}/products")
