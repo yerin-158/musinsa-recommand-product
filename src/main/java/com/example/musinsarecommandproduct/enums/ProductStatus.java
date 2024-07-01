@@ -16,4 +16,8 @@ public enum ProductStatus {
   DELETED, // 삭제
   ;
 
+  public boolean isExposed() {
+    return this.equals(ProductStatus.EXPOSED);
+  }
+
 }

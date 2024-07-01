@@ -2,12 +2,14 @@ package com.example.musinsarecommandproduct.controller.admin.mapper;
 
 import com.example.musinsarecommandproduct.controller.admin.dto.AdminProductAddRequest;
 import com.example.musinsarecommandproduct.controller.admin.dto.AdminProductResponse;
+import com.example.musinsarecommandproduct.controller.admin.dto.AdminProductStatusModifyRequest;
 import com.example.musinsarecommandproduct.controller.admin.dto.AdminSimpleProductResponse;
 import com.example.musinsarecommandproduct.entitie.Brand;
 import com.example.musinsarecommandproduct.entitie.Category;
 import com.example.musinsarecommandproduct.entitie.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
@@ -25,6 +27,9 @@ public interface AdminProductMapper {
 
   @Mapping(target = "id", ignore = true)
   Product toProduct(AdminProductAddRequest request, Long brandId);
+
+  @Mapping(target = "status", source = "request.status")
+  Product toProduct(@MappingTarget Product product, AdminProductStatusModifyRequest request);
 
   AdminSimpleProductResponse toAdminSimpleProductResponse(Product product);
 

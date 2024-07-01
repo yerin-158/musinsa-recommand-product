@@ -15,4 +15,8 @@ public enum BrandStatus {
   DELETED, // 삭제됨
   ;
 
+  public Boolean isExposed() {
+    return this.equals(BrandStatus.EXPOSED);
+  }
+
 }

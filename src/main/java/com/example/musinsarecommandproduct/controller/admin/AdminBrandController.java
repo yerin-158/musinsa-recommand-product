@@ -61,7 +61,8 @@ public class AdminBrandController {
 
   @PutMapping("/{id}/products/{productId}/status")
   public ResponseEntity<AdminProductResponse> modify(@PathVariable("id") Long brandId, @PathVariable("productId") Long productId, @RequestBody AdminProductStatusModifyRequest request) {
-    return ResponseEntity.ok(null);
+    AdminProductResponse response = adminProductService.modifyStatus(brandId, productId, request);
+    return ResponseEntity.ok(response);
   }
 
   @DeleteMapping("/{id}/products/{productId}")
