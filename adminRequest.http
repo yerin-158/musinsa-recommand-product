@@ -25,9 +25,30 @@ Content-Type: application/json
   "status": "EXPOSED"
 }
 
-### 상품 가져오기
-GET http://{{host}}{{adminBrandBasePath}}/1/products/1
+### 상품 추가하기
+POST http://{{host}}{{adminBrandBasePath}}/1/products
 Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "New-Product",
+  "price": 999999999,
+  "categoryId": 1,
+  "status": "DRAFT"
+}
+
+### 상품 가져오기
+GET http://{{host}}{{adminBrandBasePath}}/1/products/161
+Accept: application/json
+
+### 상품 상태변경
+PUT http://{{host}}{{adminBrandBasePath}}/1/products/161/status
+Accept: application/json
+Content-Type: application/json
+
+{
+  "status": "EXPOSED"
+}
 
 ### 상품 리스트 가져오기
 GET http://{{host}}{{adminBrandBasePath}}/1/products

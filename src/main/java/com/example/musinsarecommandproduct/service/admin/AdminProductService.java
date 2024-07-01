@@ -50,7 +50,10 @@ public class AdminProductService {
 
     Product product = AdminProductMapper.INSTANCE.toProduct(request, brandId);
     productRepository.save(product);
-    adminPriceStatisticsService.updatePriceStatistics(product);
+
+    if (!product.isDraft()) {
+      adminPriceStatisticsService.updatePriceStatistics(product);
+    }
 
     return AdminProductMapper.INSTANCE.toAdminProductResponse(product, targetBrand, category);
   }

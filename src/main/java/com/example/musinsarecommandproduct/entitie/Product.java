@@ -50,6 +50,10 @@ public class Product extends BaseEntity{
     return this.status.isExposed();
   }
 
+  public boolean isDraft() {
+    return ProductStatus.DRAFT.equals(this.status);
+  }
+
   public void delete() {
     this.status = ProductStatus.DELETED;
   }
