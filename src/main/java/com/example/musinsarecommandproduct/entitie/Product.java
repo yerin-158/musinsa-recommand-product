@@ -50,4 +50,8 @@ public class Product extends BaseEntity{
     return this.status.isExposed();
   }
 
+  public void delete() {
+    this.status = ProductStatus.DELETED;
+  }
+
 }

@@ -69,7 +69,8 @@ public class AdminBrandController {
 
   @DeleteMapping("/{id}/products/{productId}")
   public ResponseEntity<AdminProductResponse> delete(@PathVariable("id") Long brandId, @PathVariable("productId") Long productId) {
-    return ResponseEntity.ok(null);
+    AdminProductResponse response = adminProductService.delete(brandId, productId);
+    return ResponseEntity.ok(response);
   }
 
 

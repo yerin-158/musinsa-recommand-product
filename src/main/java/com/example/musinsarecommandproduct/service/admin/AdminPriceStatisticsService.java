@@ -47,13 +47,13 @@ public class AdminPriceStatisticsService {
 
     if (product.isExposed() && product.isPriceLowerThan(nowPriceStatistics.getLowestPrice())) {
       nowPriceStatistics.updateLowest(product);
-    } else if (product.isPriceLowestProduct(nowPriceStatistics.getLowestPriceProductId()) && product.isPriceHigherThan(nowPriceStatistics.getLowestPrice())) {
+    } else if (product.isPriceLowestProduct(nowPriceStatistics.getLowestPriceProductId()) && (!product.isExposed() || product.isPriceHigherThan(nowPriceStatistics.getLowestPrice()))) {
       updateLowestPriceProductStatistics(nowPriceStatistics);
     }
 
     if (product.isExposed() && product.isPriceHigherThan(nowPriceStatistics.getHighestPrice())) {
       nowPriceStatistics.updateHighest(product);
-    } else if (product.isPriceHighestProduct(nowPriceStatistics.getHighestPriceProductId()) && product.isPriceLowerThan(nowPriceStatistics.getHighestPrice())) {
+    } else if (product.isPriceHighestProduct(nowPriceStatistics.getHighestPriceProductId()) && (!product.isExposed() || product.isPriceLowerThan(nowPriceStatistics.getHighestPrice()))) {
       updateHighestPriceProductStatistics(nowPriceStatistics);
     }
 

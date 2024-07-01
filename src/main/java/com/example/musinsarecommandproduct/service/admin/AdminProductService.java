@@ -9,6 +9,7 @@ import com.example.musinsarecommandproduct.entitie.Brand;
 import com.example.musinsarecommandproduct.entitie.Category;
 import com.example.musinsarecommandproduct.entitie.Product;
 import com.example.musinsarecommandproduct.entitie.specs.ProductSpecs;
+import com.example.musinsarecommandproduct.enums.ProductStatus;
 import com.example.musinsarecommandproduct.repository.BrandRepository;
 import com.example.musinsarecommandproduct.repository.CategoryRepository;
 import com.example.musinsarecommandproduct.repository.ProductRepository;
@@ -60,10 +61,12 @@ public class AdminProductService {
     Product target = productRepository.findById(productId).orElseThrow(() -> new RuntimeException());
     Category category = categoryRepository.findById(target.getCategoryId()).orElseThrow(() -> new RuntimeException());
 
-    Specification<Product> specification = Specification.where(ProductSpecs.equalsCategoryId(target.getCategoryId()));
+    Specification<Product> specification = Specification.where(ProductSpecs.equalsBrandId(brandId))
+        .and(ProductSpecs.equalsCategoryId(target.getCategoryId()))
+        .and(ProductSpecs.equalsStatus(ProductStatus.EXPOSED));
     Long count = productRepository.count(specification);
-    if (brand.getStatus().isExposed() && count == 1L && !request.status().isExposed()) {
-      // 해당 상품이 해당 카테고리의 유일한 상품일 경우 안 보이게 변경 못함
+    if (brand.isExposed() && count == 1L && !request.status().isExposed()) {
+      // 해당 상품이 해당 카테고리의 유일한 노출 상품일 경우 안 보이게 변경 못함
       throw new RuntimeException();
     }
 
@@ -95,6 +98,32 @@ public class AdminProductService {
     }
 
     return AdminProductMapper.INSTANCE.toAdminProductResponse(updated, brand, category);
+  }
+
+  @Transactional
+  public AdminProductResponse delete(Long brandId, Long productId) {
+    Brand brand = brandRepository.findById(brandId).orElseThrow(() -> new RuntimeException());
+    Product target = productRepository.findById(productId).orElseThrow(() -> new RuntimeException());
+    Category category = categoryRepository.findById(target.getCategoryId()).orElseThrow(() -> new RuntimeException());
+
+    if (ProductStatus.DELETED.equals(target.getStatus())) {
+      throw new RuntimeException(); //이미 삭제된 상품임
+    }
+
+    Specification<Product> specification = Specification.where(ProductSpecs.equalsBrandId(brandId))
+        .and(ProductSpecs.equalsCategoryId(target.getCategoryId()))
+        .and(ProductSpecs.equalsStatus(ProductStatus.EXPOSED));
+    Long count = productRepository.count(specification);
+    if (brand.isExposed() && count == 1L) {
+      // 해당 상품이 해당 카테고리의 유일한 노출 상품일 경우, 삭제 못함
+      throw new RuntimeException();
+    }
+
+    target.delete();
+    productRepository.save(target);
+    adminPriceStatisticsService.updatePriceStatistics(target);
+
+    return AdminProductMapper.INSTANCE.toAdminProductResponse(target, brand, category);
   }
 
 }

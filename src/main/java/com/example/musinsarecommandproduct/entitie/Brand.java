@@ -26,4 +26,8 @@ public class Brand extends BaseEntity {
   @Enumerated(EnumType.STRING)
   private BrandStatus status;
 
+  public Boolean isExposed() {
+    return this.getStatus().isExposed();
+  }
+
 }

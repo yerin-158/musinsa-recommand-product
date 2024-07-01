@@ -1,6 +1,7 @@
 package com.example.musinsarecommandproduct.entitie.specs;
 
 import com.example.musinsarecommandproduct.entitie.Product;
+import com.example.musinsarecommandproduct.enums.ProductStatus;
 import org.springframework.data.jpa.domain.Specification;
 
 /**
@@ -14,4 +15,13 @@ public class ProductSpecs {
   public static Specification<Product> equalsCategoryId(Long categoryId) {
     return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("categoryId"), categoryId);
   }
+
+  public static Specification<Product> equalsBrandId(Long brandId) {
+    return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("brandId"), brandId);
+  }
+
+  public static Specification<Product> equalsStatus(ProductStatus status) {
+    return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("status"), status);
+  }
+
 }
