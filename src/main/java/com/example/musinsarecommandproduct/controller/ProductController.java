@@ -1,12 +1,10 @@
 package com.example.musinsarecommandproduct.controller;
 
 import com.example.musinsarecommandproduct.controller.dto.ProductByCategoryResponse;
-import com.example.musinsarecommandproduct.controller.dto.ProductSetResponse;
+import com.example.musinsarecommandproduct.controller.interfaces.ProductApi;
 import com.example.musinsarecommandproduct.enums.PriceType;
 import com.example.musinsarecommandproduct.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.context.properties.bind.DefaultValue;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
-public class ProductController {
+public class ProductController implements ProductApi {
 
   private final ProductService productService;
 

@@ -1,6 +1,7 @@
 package com.example.musinsarecommandproduct.controller.admin;
 
 import com.example.musinsarecommandproduct.controller.admin.dto.*;
+import com.example.musinsarecommandproduct.controller.admin.interfaces.AdminBrandApi;
 import com.example.musinsarecommandproduct.controller.dto.PageResponse;
 import com.example.musinsarecommandproduct.service.admin.AdminBrandService;
 import com.example.musinsarecommandproduct.service.admin.AdminProductService;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/admin/api/v1/brands")
 @RequiredArgsConstructor
-public class AdminBrandController {
+public class AdminBrandController implements AdminBrandApi {
 
   private final AdminBrandService adminBrandService;
   private final AdminProductService adminProductService;
@@ -33,25 +34,25 @@ public class AdminBrandController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<AdminBrandResponse> add(@PathVariable("id") Long brandId) {
+  public ResponseEntity<AdminBrandResponse> findOne(@PathVariable("id") Long brandId) {
     AdminBrandResponse response = adminBrandService.findOne(brandId);
     return ResponseEntity.ok(response);
   }
 
   @PostMapping("/{id}/products")
-  public ResponseEntity<AdminProductResponse> add(@PathVariable("id") Long brandId, @RequestBody AdminProductAddRequest request) {
+  public ResponseEntity<AdminProductResponse> addProduct(@PathVariable("id") Long brandId, @RequestBody AdminProductAddRequest request) {
     AdminProductResponse response = adminProductService.add(brandId, request);
     return ResponseEntity.ok(response);
   }
 
   @GetMapping("/{id}/products/{productId}")
-  public ResponseEntity<AdminProductResponse> findOne(@PathVariable("id") Long brandId, @PathVariable("productId") Long productId) {
+  public ResponseEntity<AdminProductResponse> findProduct(@PathVariable("id") Long brandId, @PathVariable("productId") Long productId) {
     AdminProductResponse response = adminProductService.findOne(brandId, productId);
     return ResponseEntity.ok(response);
   }
 
   @GetMapping("/{id}/products")
-  public ResponseEntity<PageResponse<AdminProductResponse>> findOne(
+  public ResponseEntity<PageResponse<AdminProductResponse>> findProducts(
       @PathVariable("id") Long brandId,
       @RequestParam(name = "page", defaultValue = "0") Integer page, @RequestParam(name = "size", defaultValue = "20") Integer size) {
     PageResponse<AdminProductResponse> responses = adminProductService.findAll(brandId, PageRequest.of(page, size));
@@ -59,19 +60,19 @@ public class AdminBrandController {
   }
 
   @PutMapping("/{id}/products/{productId}")
-  public ResponseEntity<AdminProductResponse> modify(@PathVariable("id") Long brandId, @PathVariable("productId") Long productId, @RequestBody AdminProductModifyRequest request) {
+  public ResponseEntity<AdminProductResponse> modifyProduct(@PathVariable("id") Long brandId, @PathVariable("productId") Long productId, @RequestBody AdminProductModifyRequest request) {
     AdminProductResponse response = adminProductService.modifyDetails(brandId, productId, request);
     return ResponseEntity.ok(response);
   }
 
   @PutMapping("/{id}/products/{productId}/status")
-  public ResponseEntity<AdminProductResponse> modify(@PathVariable("id") Long brandId, @PathVariable("productId") Long productId, @RequestBody AdminProductStatusModifyRequest request) {
+  public ResponseEntity<AdminProductResponse> modifyProductStatus(@PathVariable("id") Long brandId, @PathVariable("productId") Long productId, @RequestBody AdminProductStatusModifyRequest request) {
     AdminProductResponse response = adminProductService.modifyStatus(brandId, productId, request);
     return ResponseEntity.ok(response);
   }
 
   @DeleteMapping("/{id}/products/{productId}")
-  public ResponseEntity<AdminProductResponse> delete(@PathVariable("id") Long brandId, @PathVariable("productId") Long productId) {
+  public ResponseEntity<AdminProductResponse> deleteProduct(@PathVariable("id") Long brandId, @PathVariable("productId") Long productId) {
     AdminProductResponse response = adminProductService.delete(brandId, productId);
     return ResponseEntity.ok(response);
   }
