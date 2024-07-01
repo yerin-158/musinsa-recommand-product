@@ -33,6 +33,14 @@ public class AdminProductService {
   private final CategoryRepository categoryRepository;
   private final AdminPriceStatisticsService adminPriceStatisticsService;
 
+  public AdminProductResponse findOne(Long brandId, Long productId) {
+    Brand brand = brandRepository.findById(brandId).orElseThrow(() -> new RuntimeException());
+    Product target = productRepository.findById(productId).orElseThrow(() -> new RuntimeException());
+    Category category = categoryRepository.findById(target.getCategoryId()).orElseThrow(() -> new RuntimeException());
+
+    return AdminProductMapper.INSTANCE.toAdminProductResponse(target, brand, category);
+  }
+
   @Transactional
   public AdminProductResponse add(Long brandId, AdminProductAddRequest request) {
     //TODO validation 추가

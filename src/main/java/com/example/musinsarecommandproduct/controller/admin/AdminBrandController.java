@@ -44,7 +44,8 @@ public class AdminBrandController {
 
   @GetMapping("/{id}/products/{productId}")
   public ResponseEntity<AdminProductResponse> findOne(@PathVariable("id") Long brandId, @PathVariable("productId") Long productId) {
-    return ResponseEntity.ok(null);
+    AdminProductResponse response = adminProductService.findOne(brandId, productId);
+    return ResponseEntity.ok(response);
   }
 
   @GetMapping("/{id}/products")
