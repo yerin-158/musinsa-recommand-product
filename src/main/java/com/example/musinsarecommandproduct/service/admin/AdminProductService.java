@@ -5,6 +5,7 @@ import com.example.musinsarecommandproduct.controller.admin.dto.AdminProductModi
 import com.example.musinsarecommandproduct.controller.admin.dto.AdminProductResponse;
 import com.example.musinsarecommandproduct.controller.admin.dto.AdminProductStatusModifyRequest;
 import com.example.musinsarecommandproduct.controller.admin.mapper.AdminProductMapper;
+import com.example.musinsarecommandproduct.controller.dto.PageResponse;
 import com.example.musinsarecommandproduct.entitie.Brand;
 import com.example.musinsarecommandproduct.entitie.Category;
 import com.example.musinsarecommandproduct.entitie.Product;
@@ -14,9 +15,19 @@ import com.example.musinsarecommandproduct.repository.BrandRepository;
 import com.example.musinsarecommandproduct.repository.CategoryRepository;
 import com.example.musinsarecommandproduct.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Created by yerin-158 on 6/30/24.
@@ -40,6 +51,26 @@ public class AdminProductService {
     Category category = categoryRepository.findById(target.getCategoryId()).orElseThrow(() -> new RuntimeException());
 
     return AdminProductMapper.INSTANCE.toAdminProductResponse(target, brand, category);
+  }
+
+  public PageResponse<AdminProductResponse> findAll(Long brandId, Pageable pageable) {
+    Brand brand = brandRepository.findById(brandId).orElseThrow(() -> new RuntimeException());
+    List<Category> categories = categoryRepository.findAll();
+    Map<Long, Category> categoriesById = categories.stream().collect(Collectors.toMap(Category::getId, Function.identity()));
+
+    Specification<Product> specification = Specification.where(ProductSpecs.equalsBrandId(brandId));
+    Page<Product> productPage = productRepository.findAll(specification, pageable);
+
+    if (productPage.isEmpty()) {
+      return PageResponse.empty(pageable);
+    }
+
+    List<Product> products = productPage.getContent();
+    List<AdminProductResponse> adminProductResponses = products.stream()
+        .map(product -> AdminProductMapper.INSTANCE.toAdminProductResponse(product, brand, categoriesById.get(product.getCategoryId())))
+        .collect(Collectors.toList());
+
+    return new PageResponse<AdminProductResponse>(adminProductResponses, pageable, productPage.getTotalElements());
   }
 
   @Transactional

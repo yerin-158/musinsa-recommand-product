@@ -41,6 +41,14 @@ Content-Type: application/json
 GET http://{{host}}{{adminBrandBasePath}}/1/products/161
 Accept: application/json
 
+### 상품 가져오기
+GET http://{{host}}{{adminBrandBasePath}}/1/products/1
+Accept: application/json
+
+### 상품 리스트
+GET http://{{host}}{{adminBrandBasePath}}/1/products?size=5&page=3
+Accept: application/json
+
 ### 상품 상태변경
 PUT http://{{host}}{{adminBrandBasePath}}/1/products/161/status
 Accept: application/json

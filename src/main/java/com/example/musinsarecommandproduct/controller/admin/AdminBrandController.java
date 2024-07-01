@@ -1,11 +1,13 @@
 package com.example.musinsarecommandproduct.controller.admin;
 
 import com.example.musinsarecommandproduct.controller.admin.dto.*;
+import com.example.musinsarecommandproduct.controller.dto.PageResponse;
 import com.example.musinsarecommandproduct.service.admin.AdminBrandService;
 import com.example.musinsarecommandproduct.service.admin.AdminProductService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,10 +51,11 @@ public class AdminBrandController {
   }
 
   @GetMapping("/{id}/products")
-  public ResponseEntity<Page<AdminProductResponse>> findOne(
-      @PathVariable("id") Long brandId, @PathVariable("productId") Long productId,
+  public ResponseEntity<PageResponse<AdminProductResponse>> findOne(
+      @PathVariable("id") Long brandId,
       @RequestParam(name = "page", defaultValue = "0") Integer page, @RequestParam(name = "size", defaultValue = "20") Integer size) {
-    return ResponseEntity.ok(null);
+    PageResponse<AdminProductResponse> responses = adminProductService.findAll(brandId, PageRequest.of(page, size));
+    return ResponseEntity.ok(responses);
   }
 
   @PutMapping("/{id}/products/{productId}")
