@@ -1,13 +1,11 @@
 package com.example.musinsarecommandproduct.service;
 
-import com.example.musinsarecommandproduct.controller.dto.ProductResponse;
 import com.example.musinsarecommandproduct.controller.dto.ProductSetResponse;
 import com.example.musinsarecommandproduct.controller.mapper.ProductMapper;
 import com.example.musinsarecommandproduct.entitie.Brand;
 import com.example.musinsarecommandproduct.entitie.Category;
 import com.example.musinsarecommandproduct.entitie.PriceStatistics;
 import com.example.musinsarecommandproduct.entitie.Product;
-import com.example.musinsarecommandproduct.enums.PriceType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

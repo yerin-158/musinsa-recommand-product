@@ -1,8 +1,10 @@
 package com.example.musinsarecommandproduct.controller.admin;
 
 import com.example.musinsarecommandproduct.controller.admin.dto.*;
+import com.example.musinsarecommandproduct.controller.admin.mapper.AdminBrandMapper;
 import com.example.musinsarecommandproduct.service.admin.AdminBrandService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +24,9 @@ public class AdminBrandController {
   private final AdminBrandService adminBrandService;
 
   @PostMapping
-  public ResponseEntity<AdminBrandResponse> add(@RequestBody AdminBrandAddRequest request) {
-    return ResponseEntity.ok(null);
+  public ResponseEntity<AdminBrandResponse> add(@RequestBody AdminBrandAddRequest request) throws BadRequestException {
+    AdminBrandResponse response = adminBrandService.add(request);
+    return ResponseEntity.ok(response);
   }
 
   @GetMapping("/{id}")

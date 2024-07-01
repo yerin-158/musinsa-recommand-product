@@ -1,5 +1,9 @@
 package com.example.musinsarecommandproduct.controller.admin.dto;
 
+import com.example.musinsarecommandproduct.enums.BrandStatus;
+
+import java.time.LocalDateTime;
+
 /**
  * Created by yerin-158 on 6/30/24.
  *
@@ -7,5 +11,4 @@ package com.example.musinsarecommandproduct.controller.admin.dto;
  * @version 6/30/24.
  * @implNote First created
  */
-public class AdminBrandResponse {
-}
+public record AdminBrandResponse (Long id, String name, BrandStatus status, LocalDateTime createdAt, LocalDateTime updatedAt){}
