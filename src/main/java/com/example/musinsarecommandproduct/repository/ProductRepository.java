@@ -5,6 +5,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -23,26 +24,34 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
       "    SELECT brand_id, category_id, MIN(price) as min_price " +
       "    FROM products " +
       "    WHERE status = 'EXPOSED' " +
+      "    AND brand_id = :brandId " +
+      "    AND category_id = :categoryId " +
       "    GROUP BY brand_id, category_id" +
       ") grouped_p " +
       "ON p.brand_id = grouped_p.brand_id " +
       "AND p.category_id = grouped_p.category_id " +
       "AND p.price = grouped_p.min_price " +
-      "WHERE p.status = 'EXPOSED'", nativeQuery = true)
-  List<Product> findProductsByMinPriceInEachBrandCategoryGroup();
+      "WHERE p.status = 'EXPOSED' " +
+      "AND p.brand_id = :brandId " +
+      "AND p.category_id = :categoryId", nativeQuery = true)
+  List<Product> findCheapestProductByBrandAndCategory(@Param("brandId") Long brandId, @Param("categoryId") Long categoryId);
 
   @Query(value = "SELECT p.* " +
       "FROM products p " +
       "INNER JOIN (" +
-      "    SELECT brand_id, category_id, MAX(price) as min_price " +
+      "    SELECT brand_id, category_id, MAX(price) as max_price " +
       "    FROM products " +
       "    WHERE status = 'EXPOSED' " +
+      "    AND brand_id = :brandId " +
+      "    AND category_id = :categoryId " +
       "    GROUP BY brand_id, category_id" +
       ") grouped_p " +
       "ON p.brand_id = grouped_p.brand_id " +
       "AND p.category_id = grouped_p.category_id " +
-      "AND p.price = grouped_p.min_price " +
-      "WHERE p.status = 'EXPOSED'", nativeQuery = true)
-  List<Product> findProductsByMaxPriceInEachBrandCategoryGroup();
+      "AND p.price = grouped_p.max_price " +
+      "WHERE p.status = 'EXPOSED' " +
+      "AND p.brand_id = :brandId " +
+      "AND p.category_id = :categoryId", nativeQuery = true)
+  List<Product> findMostExpensiveProductByBrandAndCategory(@Param("brandId") Long brandId, @Param("categoryId") Long categoryId);
 
 }

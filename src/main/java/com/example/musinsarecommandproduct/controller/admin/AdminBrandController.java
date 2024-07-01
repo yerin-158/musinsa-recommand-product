@@ -47,7 +47,7 @@ public class AdminBrandController {
     return ResponseEntity.ok(null);
   }
 
-  @GetMapping("/{id}/products/{productId}/list")
+  @GetMapping("/{id}/products")
   public ResponseEntity<Page<AdminProductResponse>> findOne(
       @PathVariable("id") Long brandId, @PathVariable("productId") Long productId,
       @RequestParam(name = "page", defaultValue = "0") Integer page, @RequestParam(name = "size", defaultValue = "20") Integer size) {
@@ -55,8 +55,9 @@ public class AdminBrandController {
   }
 
   @PutMapping("/{id}/products/{productId}")
-  public ResponseEntity<AdminProductResponse> modify(@PathVariable("id") Long brandId, @PathVariable("productId") Long productId, @RequestBody AdminProductAddRequest request) {
-    return ResponseEntity.ok(null);
+  public ResponseEntity<AdminProductResponse> modify(@PathVariable("id") Long brandId, @PathVariable("productId") Long productId, @RequestBody AdminProductModifyRequest request) {
+    AdminProductResponse response = adminProductService.modifyDetails(brandId, productId, request);
+    return ResponseEntity.ok(response);
   }
 
   @PutMapping("/{id}/products/{productId}/status")

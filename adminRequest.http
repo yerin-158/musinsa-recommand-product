@@ -1,0 +1,86 @@
+### 관리자 호출
+
+### 브랜드 추가
+POST http://{{host}}{{adminBrandBasePath}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "New-Brand"
+}
+
+### 브랜드 가져오기
+GET http://{{host}}{{adminBrandBasePath}}/1
+Accept: application/json
+
+### 상품 추가하기
+POST http://{{host}}{{adminBrandBasePath}}/1/products
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "New-Product",
+  "price": 1000,
+  "categoryId": 1,
+  "status": "EXPOSED"
+}
+
+### 상품 가져오기
+GET http://{{host}}{{adminBrandBasePath}}/1/products/1
+Accept: application/json
+
+### 상품 리스트 가져오기
+GET http://{{host}}{{adminBrandBasePath}}/1/products
+Accept: application/json
+
+### 상품 수정하기 (이름만 변경)
+PUT http://{{host}}{{adminBrandBasePath}}/1/products/1
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Updated-Product",
+  "price": 10200
+}
+
+### 상품 수정하기 (가격 가장 비싸게 변경)
+PUT http://{{host}}{{adminBrandBasePath}}/1/products/1
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Updated-Product",
+  "price": 999000
+}
+
+### 상품 수정하기 (가격 가장 저렴하게 변경)
+PUT http://{{host}}{{adminBrandBasePath}}/1/products/1
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Updated-Product",
+  "price": 10
+}
+
+### 상품 상태변경 (미노출)
+PUT http://{{host}}{{adminBrandBasePath}}/1/products/1/status
+Accept: application/json
+Content-Type: application/json
+
+{
+  "status": "ADMIN_HIDDEN"
+}
+
+### 상품 상태변경 (노출)
+PUT http://{{host}}{{adminBrandBasePath}}/1/products/1/status
+Accept: application/json
+Content-Type: application/json
+
+{
+  "status": "EXPOSED"
+}
+
+### 상품 삭제
+DELETE http://{{host}}{{adminBrandBasePath}}/1/products/1
+Accept: application/json
