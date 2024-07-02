@@ -1,3 +1,5 @@
+import {ResponseBase} from '../common/Base';
+import {ProductStatus} from '../types';
 import {AdminBrandResponse} from './AdminBrand';
 import {AdminCategoryResponse} from './AdminCategory';
 
@@ -7,15 +9,13 @@ export interface AdminProductAddRequest {
   brandId: number;
   categoryId: number;
 }
-export interface AdminProductResponse {
+export interface AdminProductResponse extends ResponseBase {
   id: number;
   name: string;
   price: number;
   brandId: number;
   categoryId: number;
   status: ProductStatus;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface AdminProductModifyRequest {
@@ -32,5 +32,3 @@ export interface AdminProductFullInfoResponse {
   brand: AdminBrandResponse;
   category: AdminCategoryResponse;
 }
-
-export type ProductStatus = 'DRAFT' | 'EXPOSED' | 'ADMIN_HIDDEN' | 'SOLD_OUT' | 'DELETED';

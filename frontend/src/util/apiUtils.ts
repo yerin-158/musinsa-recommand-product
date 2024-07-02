@@ -7,8 +7,9 @@ import {
   AdminProductResponse,
   AdminProductStatusModifyRequest,
 } from '../model/admin/AdminProduct';
-import {PriceType, ProductByCategoryResponse, ProductSetResponse} from '../model/common/Product';
+import {ProductByCategoryResponse, ProductSetResponse} from '../model/store/Product';
 import {PageResponse} from '../model/ResponseWrapper';
+import {PriceType} from '../model/types';
 
 // Axios 인스턴스 생성
 const apiClient = axios.create({

@@ -1,12 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
-import BrandProductsPage from './pages/BrandProductsPage';
+import GNB from './commonents/GNB';
+import StorePage from './pages/RecommendPage';
+import AdminPage from './pages/AdminPage';
 
 const App: React.FC = () => {
+  const [currentTab, setCurrentTab] = useState<string>('store');
+
   return (
     <div className="App">
       <header className="App-header">
-        <BrandProductsPage />
+        <GNB currentTab={currentTab} setTab={setCurrentTab} />
+        {currentTab === 'store' ? <StorePage /> : <AdminPage />}
       </header>
     </div>
   );
