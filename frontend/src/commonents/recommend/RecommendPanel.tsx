@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {AdminBrandResponse} from '../model/admin/AdminBrand';
-import {ProductSetResponse} from '../model/store/Product';
-import {getAllBrands, getLowestPriceProductSet} from '../util/apiUtils';
+import {BrandSimpleResponse, ProductSetResponse} from '../../model/store/Product';
+import {getAllBrands, getLowestPriceProductSet} from '../../util/apiUtils';
+import '../../css/Recommend.css';
 
 const RecommendPanel: React.FC = () => {
-  const [brands, setBrands] = useState<AdminBrandResponse[]>([]);
+  const [brands, setBrands] = useState<BrandSimpleResponse[]>([]);
   const [selectedBrandId, setSelectedBrandId] = useState<number | null>(null);
   const [productSet, setProductSet] = useState<ProductSetResponse | null>(null);
+  const [mixBrand, setMixBrand] = useState(false);
 
   useEffect(() => {
     const fetchBrands = async () => {
@@ -41,13 +42,27 @@ const RecommendPanel: React.FC = () => {
 
   const handleBrandChange = (id: number | null) => {
     setSelectedBrandId(id);
+    setMixBrand(false);
+  };
+
+  const handleCombineBrand = async () => {
+    handleBrandChange(null);
+    setMixBrand(true);
+
+    const productSetResponse = await getLowestPriceProductSet(false);
+    setProductSet(productSetResponse);
+  };
+
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('ko-KR', {style: 'currency', currency: 'KRW'}).format(price);
   };
 
   return (
-    <div>
-      <div>
+    <div className="store-content">
+      <div className="brand-list">
+        <h4>브랜드</h4>
         <ul>
-          <li onClick={() => handleBrandChange(null)}>브랜드 없음</li>
+          <li onClick={handleCombineBrand}>브랜드 없음</li>
           {brands.map((brand) => (
             <li key={brand.id} onClick={() => handleBrandChange(brand.id)}>
               {brand.name}
@@ -55,21 +70,26 @@ const RecommendPanel: React.FC = () => {
           ))}
         </ul>
       </div>
-      <div>
+      <div className="product-set">
+        <h4>🚀 추천 상품</h4>
         {productSet ? (
           <div>
-            <h2>Product Set</h2>
             <ul>
-              {productSet.products.map((product) => (
-                <li key={product.product.id}>
-                  {product.product.name} - ${product.product.price}
-                </li>
+              {productSet.products.map(({product, category, brand}, index) => (
+                <React.Fragment key={product.id}>
+                  <li></li>
+                  <li>
+                    [{category.name}] {mixBrand ? `[${brand.name}]` : ''} {product.name}: {formatPrice(product.price)}
+                  </li>
+                </React.Fragment>
               ))}
             </ul>
-            <p>Total Price: ${productSet.sumPrice}</p>
+            <p>
+              <b>총 금액</b> 👉 {formatPrice(productSet.sumPrice)}
+            </p>
           </div>
         ) : (
-          <p>Select a brand to view products</p>
+          <p>좌측에서 브랜드를 선택하세요.</p>
         )}
       </div>
     </div>

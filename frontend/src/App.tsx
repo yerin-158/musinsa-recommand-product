@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import './App.css';
-import GNB from './commonents/GNB';
+import './css/App.css';
+import GNB from './commonents/common/GNB';
 import StorePage from './pages/RecommendPage';
 import AdminPage from './pages/AdminPage';
 

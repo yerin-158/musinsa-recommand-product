@@ -1,11 +1,15 @@
 import React from 'react';
-import RecommendPanel from '../commonents/RecommendPanel';
+import RecommendPanel from '../commonents/recommend/RecommendPanel';
+import CategoryPanel from '../commonents/recommend/CategoryPanel';
 
 const StorePage: React.FC = () => {
   return (
     <div>
-      <h1>Store Page</h1>
-      <RecommendPanel />
+      <h4>🔥 가장 저렴한 셋트를 만나보세요!</h4>
+      <div className="store-page">
+        <RecommendPanel />
+        <CategoryPanel />
+      </div>
     </div>
   );
 };

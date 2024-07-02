@@ -1,0 +1,58 @@
+body {
+  font-size: 20px; /* 기본 폰트 크기 설정 */
+  color: #000000;
+}
+
+.store-page {
+  text-align: center;
+}
+
+.store-content {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.brand-list {
+  width: 30%;
+  background-color: #000000;
+  color: white;
+  padding: 20px;
+  text-align: left;
+  border-radius: 8px;
+  margin-right: 20px;
+  font-size: 20px; /* 브랜드 목록 폰트 크기 설정 */
+}
+
+.brand-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.brand-list li {
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.brand-list li:hover {
+  background-color: white;
+  color: #333;
+}
+
+.product-set {
+  width: 60%;
+  border: 1px solid black;
+  padding: 20px;
+  text-align: left;
+  border-radius: 8px;
+  font-size: 20px; /* 제품 목록 폰트 크기 설정 */
+}
+
+.product-set ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.product-set li {
+  margin: 10px 0;
+}

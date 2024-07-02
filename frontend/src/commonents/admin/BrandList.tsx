@@ -1,5 +1,5 @@
 import React from 'react';
-import {AdminBrandResponse} from '../model/admin/AdminBrand';
+import {AdminBrandResponse} from '../../model/admin/AdminBrand';
 
 interface BrandListProps {
   brands: AdminBrandResponse[];

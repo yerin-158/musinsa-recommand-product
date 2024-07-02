@@ -104,8 +104,9 @@ export const getProductsSummaryByCategory = async (
   priceTypes: PriceType[],
   size: number = 1
 ): Promise<ProductByCategoryResponse> => {
-  const response = await apiClient.get<ProductByCategoryResponse>('/products/summary', {
-    params: {categoryId, priceType: priceTypes, size},
+  const priceTypeParam = priceTypes.join(',');
+  const response = await apiClient.get<ProductByCategoryResponse>('/api/v1/products/summary', {
+    params: {categoryId, priceType: priceTypeParam, size},
   });
   return response.data;
 };
@@ -115,7 +116,7 @@ export const getLowestPriceProductSet = async (
   byBrand: boolean = false,
   brandId?: number
 ): Promise<ProductSetResponse> => {
-  const response = await apiClient.get<ProductSetResponse>('/recommend/products', {
+  const response = await apiClient.get<ProductSetResponse>('/api/v1/recommend/lowest-price-set', {
     params: {byBrand, brandId},
   });
   return response.data;

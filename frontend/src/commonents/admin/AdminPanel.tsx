@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {AdminBrandAddRequest, AdminBrandResponse} from '../model/admin/AdminBrand';
-import {AdminProductAddRequest, AdminProductFullInfoResponse} from '../model/admin/AdminProduct';
-import {getAllBrands, getBrandProducts, addBrand, addProductToBrand} from '../util/apiUtils';
+import {AdminBrandAddRequest, AdminBrandResponse} from '../../model/admin/AdminBrand';
+import {AdminProductAddRequest, AdminProductFullInfoResponse} from '../../model/admin/AdminProduct';
+import {getAllBrands, getBrandProducts, addBrand, addProductToBrand} from '../../util/apiUtils';
 import BrandProducts from './BrandProducts';
 import BrandList from './BrandList';
 
