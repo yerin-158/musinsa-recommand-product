@@ -1,6 +1,8 @@
 package com.example.musinsarecommandproduct.service;
 
 import com.example.musinsarecommandproduct.entitie.Category;
+import com.example.musinsarecommandproduct.exception.BadRequestException;
+import com.example.musinsarecommandproduct.exception.BadRequestType;
 import com.example.musinsarecommandproduct.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,7 @@ public class CategoryService {
   private final CategoryRepository categoryRepository;
 
   public Category findById(Long id) {
-    return categoryRepository.findById(id).orElseThrow(() -> new RuntimeException());
+    return categoryRepository.findById(id).orElseThrow(() -> new BadRequestException(BadRequestType.NOT_FOUND_CATEGORY));
   }
 
   public List<Category> findAll() {

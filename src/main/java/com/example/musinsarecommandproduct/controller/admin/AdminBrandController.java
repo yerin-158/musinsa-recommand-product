@@ -29,7 +29,7 @@ public class AdminBrandController implements AdminBrandApi {
   private final AdminProductService adminProductService;
 
   @PostMapping
-  public ResponseEntity<AdminBrandResponse> add(@RequestBody AdminBrandAddRequest request) throws BadRequestException {
+  public ResponseEntity<AdminBrandResponse> add(@RequestBody AdminBrandAddRequest request) {
     AdminBrandResponse response = adminBrandService.add(request);
     return ResponseEntity.ok(response);
   }

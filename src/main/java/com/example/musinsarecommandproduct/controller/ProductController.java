@@ -3,6 +3,8 @@ package com.example.musinsarecommandproduct.controller;
 import com.example.musinsarecommandproduct.controller.dto.ProductByCategoryResponse;
 import com.example.musinsarecommandproduct.controller.interfaces.ProductApi;
 import com.example.musinsarecommandproduct.enums.PriceType;
+import com.example.musinsarecommandproduct.exception.BadRequestException;
+import com.example.musinsarecommandproduct.exception.BadRequestType;
 import com.example.musinsarecommandproduct.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +33,7 @@ public class ProductController implements ProductApi {
       @RequestParam(value = "size", required = false, defaultValue = "1") Integer size) {
 
     if (categoryId == null || priceTypes == null || priceTypes.isEmpty()) {
-      throw new RuntimeException();
+      throw new BadRequestException(BadRequestType.INVALID_REQUEST);
     }
 
     ProductByCategoryResponse response = productService.getProductByCategory(categoryId, priceTypes, size);

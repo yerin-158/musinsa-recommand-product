@@ -3,6 +3,8 @@ package com.example.musinsarecommandproduct.service.admin;
 import com.example.musinsarecommandproduct.entitie.PriceStatistics;
 import com.example.musinsarecommandproduct.entitie.Product;
 import com.example.musinsarecommandproduct.entitie.specs.PriceStatisticsSpecs;
+import com.example.musinsarecommandproduct.exception.BadRequestException;
+import com.example.musinsarecommandproduct.exception.BadRequestType;
 import com.example.musinsarecommandproduct.repository.PriceStatisticsRepository;
 import com.example.musinsarecommandproduct.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +44,7 @@ public class AdminPriceStatisticsService {
     PriceStatistics nowPriceStatistics = nowPriceStatisticsOptional.get();
     // 처음 insert 할 때 반드시 채워서 넣기때문에 null인 것 있으면 버그임
     if (nowPriceStatistics.getLowestPrice() == null || nowPriceStatistics.getHighestPrice() == null) {
-      throw new RuntimeException();
+      throw new BadRequestException(BadRequestType.INVALID_PRICE_STATISTICS);
     }
 
     if (product.isExposed() && product.isPriceLowerThan(nowPriceStatistics.getLowestPrice())) {

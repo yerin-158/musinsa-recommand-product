@@ -3,6 +3,8 @@ package com.example.musinsarecommandproduct.controller;
 import com.example.musinsarecommandproduct.controller.dto.ProductResponse;
 import com.example.musinsarecommandproduct.controller.dto.ProductSetResponse;
 import com.example.musinsarecommandproduct.controller.interfaces.RecommendApi;
+import com.example.musinsarecommandproduct.exception.BadRequestException;
+import com.example.musinsarecommandproduct.exception.BadRequestType;
 import com.example.musinsarecommandproduct.service.RecommendService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +33,7 @@ public class RecommendController implements RecommendApi {
   public ResponseEntity<ProductSetResponse> getLowestPriceProductSet(
       @RequestParam(name = "byBrand", defaultValue = "false") Boolean byBrand, @RequestParam(name = "brandId", required = false) Long brandId) {
     if (byBrand && brandId == null) {
-      throw new RuntimeException();
+      throw new BadRequestException(BadRequestType.INVALID_REQUEST);
     }
 
     if (byBrand) {

@@ -3,6 +3,8 @@ package com.example.musinsarecommandproduct.service;
 import com.example.musinsarecommandproduct.entitie.PriceStatistics;
 import com.example.musinsarecommandproduct.entitie.specs.PriceStatisticsSpecs;
 import com.example.musinsarecommandproduct.enums.PriceType;
+import com.example.musinsarecommandproduct.exception.BadRequestException;
+import com.example.musinsarecommandproduct.exception.BadRequestType;
 import com.example.musinsarecommandproduct.repository.PriceStatisticsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -29,7 +31,7 @@ public class PriceStatisticsService {
 
   public List<PriceStatistics> find(Long categoryId, PriceType priceType, Integer size) {
     if (categoryId == null || priceType == null || size == null) {
-      throw new RuntimeException();
+      throw new BadRequestException(BadRequestType.INVALID_REQUEST);
     }
 
     if (priceType.equals(PriceType.LOW)) {
@@ -57,7 +59,7 @@ public class PriceStatisticsService {
 
   private static Specification<PriceStatistics> getSpecification(Long categoryId, Long brandId) {
     if (categoryId == null && brandId == null) {
-      throw new RuntimeException();
+      throw new BadRequestException(BadRequestType.INVALID_REQUEST);
     }
 
     Specification<PriceStatistics> specification = Specification.where(null);
