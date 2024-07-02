@@ -1,7 +1,5 @@
 package com.example.musinsarecommandproduct.controller.admin.dto;
 
-import java.time.LocalDateTime;
-
 /**
  * Created by yerin-158 on 7/1/24.
  *
@@ -9,4 +7,4 @@ import java.time.LocalDateTime;
  * @version 7/1/24.
  * @implNote First created
  */
-public record AdminCategoryResponse(Long id, String name, LocalDateTime createdAt, LocalDateTime updatedAt) {}
+public record AdminCategoryResponse(Long id, String name) {}
