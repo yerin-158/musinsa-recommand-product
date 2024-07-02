@@ -222,12 +222,43 @@ public class AdminBrandControllerTest extends IntegrationTest {
   @Test
   @DirtiesContext
   @Description("상품 추가 시도 시 임시저장 상태가 아니라면 필수 값이 없을 때 400 에러가 발생한다.")
-  public void fail_add_product_have_not_required_fields() {}
+  public void fail_add_product_have_not_required_fields() {
+    AdminProductAddRequest invalidCategoryRequest = new AdminProductAddRequest(null, null, null, ProductStatus.EXPOSED);
+
+    given()
+        .contentType(ContentType.JSON)
+        .body(invalidCategoryRequest)
+    .when()
+        .log().uri()
+        .post("/admin/api/v1/brands/{id}/products", savedBrand.getId())
+    .then()
+        .statusCode(HttpStatus.BAD_REQUEST.value())
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .body("message", equalTo(BadRequestType.NOT_FOUND_CATEGORY.getMessage()))
+        .body("code", equalTo(BadRequestType.NOT_FOUND_CATEGORY.getCode()));
+  }
 
   @Test
   @DirtiesContext
   @Description("상품 추가 시도 시 임시저장 상태라면 필수 값이 없어도 정상적으로 저장된다.")
-  public void add_draft_product_have_not_required_fields_success() {}
+  public void add_draft_product_have_not_required_fields_success() {
+    AdminProductAddRequest invalidCategoryRequest = new AdminProductAddRequest(null, null, null, ProductStatus.DRAFT);
+
+    given()
+        .contentType(ContentType.JSON)
+        .body(invalidCategoryRequest)
+    .when()
+        .log().uri()
+        .post("/admin/api/v1/brands/{id}/products", savedBrand.getId())
+    .then()
+        .statusCode(HttpStatus.OK.value())
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .body("product.name", equalTo(invalidCategoryRequest.name()))
+        .body("product.price", equalTo(invalidCategoryRequest.price()))
+        .body("product.status", equalTo(invalidCategoryRequest.status()))
+        .body("brand", nullValue())
+        .body("category", nullValue());
+  }
 
   /** GET /admin/api/v1/brands/{id}/products/{productId} */
   @Test
