@@ -15,13 +15,10 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Description;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -105,7 +102,7 @@ public class AdminBrandControllerTest extends IntegrationTest {
   @Test
   @DirtiesContext
   @Description("신규 브랜드 추가 시도 시, 브랜드 이름이 동일한 경우 400에러가 발생한다.")
-  public void add_brand_duplicated_name_test() {
+  public void fail_add_duplicated_name_brand() {
     AdminBrandAddRequest request = new AdminBrandAddRequest(brandNames.get("duplicated"));
 
     given()
@@ -119,6 +116,25 @@ public class AdminBrandControllerTest extends IntegrationTest {
         .contentType(MediaType.APPLICATION_JSON_VALUE)
         .body("message", equalTo(BadRequestType.DUPLICATE_BRAND_NAME.getMessage()))
         .body("code", equalTo(BadRequestType.DUPLICATE_BRAND_NAME.getCode()));
+  }
+
+  @Test
+  @DirtiesContext
+  @Description("신규 브랜드 추가 시도 시, 브랜드 이름이 없는 경우 에러가 발생한다.")
+  public void fail_add_brand_empty_name() {
+    AdminBrandAddRequest request = new AdminBrandAddRequest(null);
+
+    given()
+        .contentType(ContentType.JSON)
+        .body(request)
+    .when()
+        .log().uri()
+        .post("/admin/api/v1/brands")
+    .then()
+        .statusCode(HttpStatus.BAD_REQUEST.value())
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .body("message", equalTo(BadRequestType.BRAND_NAME_IS_REQUIRED.getMessage()))
+        .body("code", equalTo(BadRequestType.BRAND_NAME_IS_REQUIRED.getCode()));
   }
 
   /** GET /admin/api/v1/brands/{id} */

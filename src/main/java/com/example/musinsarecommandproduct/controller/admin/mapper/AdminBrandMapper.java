@@ -20,6 +20,7 @@ public interface AdminBrandMapper {
   AdminBrandMapper INSTANCE = Mappers.getMapper(AdminBrandMapper.class);
 
   @Mapping(target = "status", expression = "java(com.example.musinsarecommandproduct.enums.BrandStatus.NOT_EXPOSED)")
+  @Mapping(target = "id", ignore = true)
   Brand toBrand(AdminBrandAddRequest request);
 
   AdminBrandResponse toAdminBrandResponse(Brand brand);

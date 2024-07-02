@@ -8,12 +8,12 @@ import com.example.musinsarecommandproduct.entitie.specs.BrandSpecs;
 import com.example.musinsarecommandproduct.exception.BadRequestException;
 import com.example.musinsarecommandproduct.exception.BadRequestType;
 import com.example.musinsarecommandproduct.repository.BrandRepository;
+import com.example.musinsarecommandproduct.service.admin.validator.AdminBrandAddRequestValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -28,15 +28,10 @@ import java.util.stream.Collectors;
 public class AdminBrandService {
 
   private final BrandRepository brandRepository;
+  private final AdminBrandAddRequestValidator adminBrandAddRequestValidator;
 
   public AdminBrandResponse add(AdminBrandAddRequest request)  {
-    //TODO validation 분리
-    Specification<Brand> specification = Specification.where(BrandSpecs.equalsName(request.name()));
-    Optional<Brand> sameNameBrand = brandRepository.findOne(specification);
-
-    if (sameNameBrand.isPresent()) {
-      throw new BadRequestException(BadRequestType.DUPLICATE_BRAND_NAME);
-    }
+    adminBrandAddRequestValidator.validate(request);
 
     Brand newBrand = AdminBrandMapper.INSTANCE.toBrand(request);
     brandRepository.save(newBrand);
