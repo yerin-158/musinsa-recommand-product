@@ -16,6 +16,10 @@ import com.example.musinsarecommandproduct.exception.BadRequestType;
 import com.example.musinsarecommandproduct.repository.BrandRepository;
 import com.example.musinsarecommandproduct.repository.CategoryRepository;
 import com.example.musinsarecommandproduct.repository.ProductRepository;
+import com.example.musinsarecommandproduct.service.admin.validator.AdminProductAddRequestValidator;
+import com.example.musinsarecommandproduct.service.admin.validator.AdminProductModifyRequestValidator;
+import com.example.musinsarecommandproduct.service.admin.validator.AdminProductStatusModifyRequestValidator;
+import com.example.musinsarecommandproduct.service.admin.validator.AdminRequiredExistValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,13 +48,17 @@ public class AdminProductService {
   private final CategoryRepository categoryRepository;
   private final AdminPriceStatisticsService adminPriceStatisticsService;
 
+  private final AdminRequiredExistValidator requiredExistValidator;
+  private final AdminProductAddRequestValidator productAddRequestValidator;
+  private final AdminProductModifyRequestValidator productModifyRequestValidator;
+  private final AdminProductStatusModifyRequestValidator productStatusModifyRequestValidator;
+
   public AdminProductResponse findOne(Long brandId, Long productId) {
-    Brand brand = brandRepository.findById(brandId)
-        .orElseThrow(() -> new BadRequestException(BadRequestType.NOT_FOUND_BRAND));
-    Product target = productRepository.findById(productId)
-        .orElseThrow(() -> new BadRequestException(BadRequestType.NOT_FOUND_PRODUCT));
-    Category category = categoryRepository.findById(target.getCategoryId())
-        .orElseThrow(() -> new BadRequestException(BadRequestType.NOT_FOUND_CATEGORY));
+    requiredExistValidator.validate(brandId, productId, null);
+
+    Brand brand = brandRepository.findById(brandId).get();
+    Product target = productRepository.findById(productId).get();
+    Category category = categoryRepository.findById(target.getCategoryId()).get();
 
     if (!brand.getId().equals(target.getBrandId()) || !category.getId().equals(target.getCategoryId())) {
       new BadRequestException(BadRequestType.INVALID_DATA);
@@ -60,8 +68,9 @@ public class AdminProductService {
   }
 
   public PageResponse<AdminProductResponse> findAll(Long brandId, Pageable pageable) {
-    Brand brand = brandRepository.findById(brandId)
-        .orElseThrow(() -> new BadRequestException(BadRequestType.NOT_FOUND_BRAND));
+    requiredExistValidator.validate(brandId, null, null);
+
+    Brand brand = brandRepository.findById(brandId).get();
     List<Category> categories = categoryRepository.findAll();
     Map<Long, Category> categoriesById = categories.stream().collect(Collectors.toMap(Category::getId, Function.identity()));
 
@@ -82,13 +91,17 @@ public class AdminProductService {
 
   @Transactional
   public AdminProductResponse add(Long brandId, AdminProductAddRequest request) {
-    //TODO validation 추가
-    Brand targetBrand = brandRepository.findById(brandId)
-        .orElseThrow(() -> new BadRequestException(BadRequestType.NOT_FOUND_BRAND));
-    Category category = categoryRepository.findById(request.categoryId())
-        .orElseThrow(() -> new BadRequestException(BadRequestType.NOT_FOUND_CATEGORY));
+    productAddRequestValidator.validate(request);
+    requiredExistValidator.validate(brandId, null, request.categoryId());
 
+    Brand targetBrand = brandRepository.findById(brandId).get();
     Product product = AdminProductMapper.INSTANCE.toProduct(request, brandId);
+
+    Category category = null;
+    if (!product.isDraft() && product.getCategoryId() != null) {
+      category = categoryRepository.findById(request.categoryId()).get();
+    }
+
     productRepository.save(product);
 
     if (!product.isDraft()) {
@@ -99,13 +112,33 @@ public class AdminProductService {
   }
 
   @Transactional
+  public AdminProductResponse modifyDetails(Long brandId, Long productId, AdminProductModifyRequest request) {
+    requiredExistValidator.validate(brandId, productId, null);
+    productModifyRequestValidator.validate(request, productId);
+
+    Product target = productRepository.findById(productId).get();
+    Brand brand = brandRepository.findById(brandId).get();
+    Category category = categoryRepository.findById(target.getCategoryId()).get();
+    Boolean changePrice = !target.getPrice().equals(request.price());
+
+    Product updated = AdminProductMapper.INSTANCE.toProduct(target, request);
+    productRepository.save(updated);
+
+    if (changePrice) {
+      adminPriceStatisticsService.updatePriceStatistics(updated);
+    }
+
+    return AdminProductMapper.INSTANCE.toAdminProductResponse(updated, brand, category);
+  }
+
+  @Transactional
   public AdminProductResponse modifyStatus(Long brandId, Long productId, AdminProductStatusModifyRequest request) {
-    Brand brand = brandRepository.findById(brandId)
-        .orElseThrow(() -> new BadRequestException(BadRequestType.NOT_FOUND_BRAND));
-    Product target = productRepository.findById(productId)
-        .orElseThrow(() -> new BadRequestException(BadRequestType.NOT_FOUND_PRODUCT));
-    Category category = categoryRepository.findById(target.getCategoryId())
-        .orElseThrow(() -> new BadRequestException(BadRequestType.NOT_FOUND_CATEGORY));
+    requiredExistValidator.validate(brandId, productId, null);
+    productStatusModifyRequestValidator.validate(request, productId);
+
+    Brand brand = brandRepository.findById(brandId).get();
+    Product target = productRepository.findById(productId).get();
+    Category category = categoryRepository.findById(target.getCategoryId()).get();
 
     Specification<Product> specification = Specification.where(ProductSpecs.equalsBrandId(brandId))
         .and(ProductSpecs.equalsCategoryId(target.getCategoryId()))
@@ -128,34 +161,12 @@ public class AdminProductService {
   }
 
   @Transactional
-  public AdminProductResponse modifyDetails(Long brandId, Long productId, AdminProductModifyRequest request) {
-    Brand brand = brandRepository.findById(brandId)
-        .orElseThrow(() -> new BadRequestException(BadRequestType.NOT_FOUND_BRAND));
-    Product target = productRepository.findById(productId)
-        .orElseThrow(() -> new BadRequestException(BadRequestType.NOT_FOUND_PRODUCT));
-    Category category = categoryRepository.findById(target.getCategoryId())
-        .orElseThrow(() -> new BadRequestException(BadRequestType.NOT_FOUND_CATEGORY));
-
-    Boolean changePrice = !target.getPrice().equals(request.price());
-
-    Product updated = AdminProductMapper.INSTANCE.toProduct(target, request);
-    productRepository.save(updated);
-
-    if (changePrice) {
-      adminPriceStatisticsService.updatePriceStatistics(updated);
-    }
-
-    return AdminProductMapper.INSTANCE.toAdminProductResponse(updated, brand, category);
-  }
-
-  @Transactional
   public AdminProductResponse delete(Long brandId, Long productId) {
-    Brand brand = brandRepository.findById(brandId)
-        .orElseThrow(() -> new BadRequestException(BadRequestType.NOT_FOUND_BRAND));
-    Product target = productRepository.findById(productId)
-        .orElseThrow(() -> new BadRequestException(BadRequestType.NOT_FOUND_PRODUCT));
-    Category category = categoryRepository.findById(target.getCategoryId())
-        .orElseThrow(() -> new BadRequestException(BadRequestType.NOT_FOUND_CATEGORY));
+    requiredExistValidator.validate(brandId, productId, null);
+
+    Brand brand = brandRepository.findById(brandId).get();
+    Product target = productRepository.findById(productId).get();
+    Category category = categoryRepository.findById(target.getCategoryId()).get();
 
     if (ProductStatus.DELETED.equals(target.getStatus())) {
       throw new BadRequestException(BadRequestType.ALREADY_DELETED_PRODUCT);

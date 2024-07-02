@@ -237,9 +237,9 @@ public class AdminBrandControllerTest extends IntegrationTest {
 
   @Test
   @DirtiesContext
-  @Description("상품 추가 시도 시 임시저장 상태가 아니라면 필수 값이 없을 때 400 에러가 발생한다.")
-  public void fail_add_product_have_not_required_fields() {
-    AdminProductAddRequest invalidCategoryRequest = new AdminProductAddRequest(null, null, null, ProductStatus.EXPOSED);
+  @Description("상품 추가 시도 시 임시저장 상태가 아니라면 카테고리id 값이 없을 때 400 에러가 발생한다.")
+  public void fail_add_product_have_not_required_fields1() {
+    AdminProductAddRequest invalidCategoryRequest = new AdminProductAddRequest(null, "name", 1000, ProductStatus.EXPOSED);
 
     given()
         .contentType(ContentType.JSON)
@@ -250,8 +250,65 @@ public class AdminBrandControllerTest extends IntegrationTest {
     .then()
         .statusCode(HttpStatus.BAD_REQUEST.value())
         .contentType(MediaType.APPLICATION_JSON_VALUE)
-        .body("message", equalTo(BadRequestType.NOT_FOUND_CATEGORY.getMessage()))
-        .body("code", equalTo(BadRequestType.NOT_FOUND_CATEGORY.getCode()));
+        .body("message", equalTo(BadRequestType.PRODUCT_CATEGORY_ID_IS_REQUIRED.getMessage()))
+        .body("code", equalTo(BadRequestType.PRODUCT_CATEGORY_ID_IS_REQUIRED.getCode()));
+  }
+
+  @Test
+  @DirtiesContext
+  @Description("상품 추가 시도 시 임시저장 상태가 아니라면 상품명이 없을 때 400 에러가 발생한다.")
+  public void fail_add_product_have_not_required_fields2() {
+    AdminProductAddRequest invalidCategoryRequest = new AdminProductAddRequest(savedCategory.getId(), "", 1000, ProductStatus.EXPOSED);
+
+    given()
+        .contentType(ContentType.JSON)
+        .body(invalidCategoryRequest)
+    .when()
+        .log().uri()
+        .post("/admin/api/v1/brands/{id}/products", savedBrand.getId())
+    .then()
+        .statusCode(HttpStatus.BAD_REQUEST.value())
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .body("message", equalTo(BadRequestType.PRODUCT_NAME_IS_REQUIRED.getMessage()))
+        .body("code", equalTo(BadRequestType.PRODUCT_NAME_IS_REQUIRED.getCode()));
+  }
+
+  @Test
+  @DirtiesContext
+  @Description("상품 추가 시도 시 임시저장 상태가 아니라면 가격이 0원이면 400 에러가 발생한다.")
+  public void fail_add_product_have_not_required_fields3() {
+    AdminProductAddRequest invalidCategoryRequest = new AdminProductAddRequest(savedCategory.getId(), "name", 0, ProductStatus.EXPOSED);
+
+    given()
+        .contentType(ContentType.JSON)
+        .body(invalidCategoryRequest)
+    .when()
+        .log().uri()
+        .post("/admin/api/v1/brands/{id}/products", savedBrand.getId())
+    .then()
+        .statusCode(HttpStatus.BAD_REQUEST.value())
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .body("message", equalTo(BadRequestType.PRODUCT_PRICE_CANNOT_BE_ZERO.getMessage()))
+        .body("code", equalTo(BadRequestType.PRODUCT_PRICE_CANNOT_BE_ZERO.getCode()));
+  }
+
+  @Test
+  @DirtiesContext
+  @Description("상품 추가 시도 시 임시저장 상태가 아니라면 가격이 음수이면 400 에러가 발생한다.")
+  public void fail_add_product_have_not_required_fields4() {
+    AdminProductAddRequest invalidCategoryRequest = new AdminProductAddRequest(savedCategory.getId(), "name", -100, ProductStatus.EXPOSED);
+
+    given()
+        .contentType(ContentType.JSON)
+        .body(invalidCategoryRequest)
+    .when()
+        .log().uri()
+        .post("/admin/api/v1/brands/{id}/products", savedBrand.getId())
+    .then()
+        .statusCode(HttpStatus.BAD_REQUEST.value())
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .body("message", equalTo(BadRequestType.PRODUCT_PRICE_CANNOT_BE_NEGATIVE.getMessage()))
+        .body("code", equalTo(BadRequestType.PRODUCT_PRICE_CANNOT_BE_NEGATIVE.getCode()));
   }
 
   @Test
@@ -271,8 +328,8 @@ public class AdminBrandControllerTest extends IntegrationTest {
         .contentType(MediaType.APPLICATION_JSON_VALUE)
         .body("product.name", equalTo(invalidCategoryRequest.name()))
         .body("product.price", equalTo(invalidCategoryRequest.price()))
-        .body("product.status", equalTo(invalidCategoryRequest.status()))
-        .body("brand", nullValue())
+        .body("product.status", equalTo(invalidCategoryRequest.status().name()))
+        .body("brand.id", equalTo(savedBrand.getId().intValue()))
         .body("category", nullValue());
   }
 
@@ -424,9 +481,6 @@ public class AdminBrandControllerTest extends IntegrationTest {
   @DirtiesContext
   @Description("삭제된 상품의 수정 변경 시도 시 400 에러가 발생한다.")
   public void update_fail_deleted_product() {
-    Long targetBrandId = 1L;
-    Long targetProductId = 5L;
-
     // 테스트 위해 데이터 삭제
     given()
         .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -446,13 +500,13 @@ public class AdminBrandControllerTest extends IntegrationTest {
         .body(request)
     .when()
         .log().uri()
-        .put("/admin/api/v1/brands/{id}/products/{productId}", targetBrandId, targetProductId)
+        .put("/admin/api/v1/brands/{id}/products/{productId}", savedProduct.getBrandId(), savedProduct.getId())
     .then()
         .log().all()
         .statusCode(HttpStatus.BAD_REQUEST.value())
         .contentType(MediaType.APPLICATION_JSON_VALUE)
-        .body("message", equalTo(BadRequestType.ALREADY_DELETED_PRODUCT.getMessage()))
-        .body("code", equalTo(BadRequestType.ALREADY_DELETED_PRODUCT.getCode()));
+        .body("message", equalTo(BadRequestType.DELETED_PRODUCT_CANNOT_MODIFY.getMessage()))
+        .body("code", equalTo(BadRequestType.DELETED_PRODUCT_CANNOT_MODIFY.getCode()));
   }
 
 
@@ -650,8 +704,5 @@ public class AdminBrandControllerTest extends IntegrationTest {
         .body("message", equalTo(BadRequestType.NOT_FOUND_PRODUCT.getMessage()))
         .body("code", equalTo(BadRequestType.NOT_FOUND_PRODUCT.getCode()));
   }
-
-
-  /** 상품 추가, 변경, 삭제 시 순위 변경 확인 */
 
 }

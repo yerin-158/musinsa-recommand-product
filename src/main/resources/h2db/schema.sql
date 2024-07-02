@@ -11,9 +11,9 @@ CREATE TABLE brands (
 CREATE TABLE products (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,  -- pk
     brand_id BIGINT NOT NULL,  -- 브랜드 아이디
-    category_id BIGINT NOT NULL,  -- 카테고리 아이디
-    name VARCHAR(100) NOT NULL,  -- 상품명
-    price INT NOT NULL,  -- 가격
+    category_id BIGINT,  -- 카테고리 아이디
+    name VARCHAR(100),  -- 상품명
+    price INT,  -- 가격
     status VARCHAR(25) NOT NULL,  -- enum: DRAFT, EXPOSED, ADMIN_HIDDEN, SOLD_OUT, DELETED
     created_at DATETIME NOT NULL,  -- 생성일
     updated_at DATETIME NOT NULL  -- 수정일
