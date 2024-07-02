@@ -28,8 +28,8 @@ public class ProductController implements ProductApi {
 
   @GetMapping("/summary")
   public ResponseEntity<ProductByCategoryResponse> getProductsSummaryByCategory(
-      @RequestParam("categoryId") Long categoryId,
-      @RequestParam("priceType") List<PriceType> priceTypes,
+      @RequestParam(value = "categoryId", required = false) Long categoryId,
+      @RequestParam(value = "priceType", required = false) List<PriceType> priceTypes,
       @RequestParam(value = "size", required = false, defaultValue = "1") Integer size) {
 
     if (categoryId == null || priceTypes == null || priceTypes.isEmpty()) {
