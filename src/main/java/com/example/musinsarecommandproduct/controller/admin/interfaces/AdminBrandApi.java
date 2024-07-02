@@ -10,6 +10,8 @@ import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Created by yerin-158 on 7/2/24.
  *
@@ -24,6 +26,10 @@ public interface AdminBrandApi {
   @Operation(summary = "브랜드 추가", description = "새로운 브랜드를 추가합니다.")
   ResponseEntity<AdminBrandResponse> add(
       @Parameter(description = "브랜드 추가 요청 객체", required = true) @RequestBody AdminBrandAddRequest request) throws BadRequestException;
+
+  @GetMapping
+  @Operation(summary = "모든 브랜드 조회", description = "모든 브랜드를 가져옵니다. (페이징X)")
+  ResponseEntity<List<AdminBrandResponse>> findAll();
 
   @GetMapping("/{id}")
   @Operation(summary = "브랜드 조회", description = "ID로 브랜드를 조회합니다.")

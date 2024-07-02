@@ -7,10 +7,11 @@ import com.example.musinsarecommandproduct.service.admin.AdminBrandService;
 import com.example.musinsarecommandproduct.service.admin.AdminProductService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Created by yerin-158 on 6/30/24.
@@ -31,6 +32,12 @@ public class AdminBrandController implements AdminBrandApi {
   public ResponseEntity<AdminBrandResponse> add(@RequestBody AdminBrandAddRequest request) throws BadRequestException {
     AdminBrandResponse response = adminBrandService.add(request);
     return ResponseEntity.ok(response);
+  }
+
+  @GetMapping
+  public ResponseEntity<List<AdminBrandResponse>> findAll() {
+    List<AdminBrandResponse> responses = adminBrandService.findAll();
+    return ResponseEntity.ok(responses);
   }
 
   @GetMapping("/{id}")

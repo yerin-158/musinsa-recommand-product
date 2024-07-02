@@ -9,6 +9,10 @@ Content-Type: application/json
   "name": "New-Brand"
 }
 
+### 브랜드 전체 가져오기
+GET http://{{host}}{{adminBrandBasePath}}
+Accept: application/json
+
 ### 브랜드 가져오기
 GET http://{{host}}{{adminBrandBasePath}}/1
 Accept: application/json

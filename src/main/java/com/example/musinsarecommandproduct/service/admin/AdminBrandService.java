@@ -18,7 +18,9 @@ import org.apache.coyote.BadRequestException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Created by yerin-158 on 6/30/24.
@@ -47,6 +49,10 @@ public class AdminBrandService {
     brandRepository.save(newBrand);
 
     return AdminBrandMapper.INSTANCE.toAdminBrandResponse(newBrand);
+  }
+
+  public List<AdminBrandResponse> findAll() {
+    return brandRepository.findAll().stream().map(brand -> AdminBrandMapper.INSTANCE.toAdminBrandResponse(brand)).collect(Collectors.toList());
   }
 
   public AdminBrandResponse findOne(Long id) {
