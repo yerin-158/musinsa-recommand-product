@@ -17,13 +17,14 @@ public class BadRequestException extends RuntimeException {
     super(type == null ? null : type.name());
     this.type = type;
     this.message = type.getMessage();
+    this.code = type.getCode();
   }
 
   public BadRequestType getType() {
     return this.type;
   }
 
-  public BadRequestType getCode() {return this.type; }
+  public String getCode() {return this.code; }
 
   @Override
   public String getMessage() {

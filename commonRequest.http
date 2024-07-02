@@ -1,1 +1,5 @@
 ### 일반 유저 호출
+
+### 브랜드 전체 가져오기
+GET http://{{host}}{{productBasePath}}/summary?categoryId=1&priceType=LOW,HIGH
+Accept: application/json
