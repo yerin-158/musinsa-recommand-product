@@ -3,6 +3,7 @@ package com.example.musinsarecommandproduct.entitie;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Created by yerin-158 on 6/30/24.
@@ -13,6 +14,7 @@ import lombok.Getter;
  */
 @Entity(name = "categories")
 @Getter
+@Setter
 public class Category extends BaseEntity{
 
   @Id

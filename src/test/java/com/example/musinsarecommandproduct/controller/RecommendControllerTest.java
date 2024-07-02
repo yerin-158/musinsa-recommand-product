@@ -1,7 +1,6 @@
 package com.example.musinsarecommandproduct.controller;
 
 import com.example.musinsarecommandproduct.IntegrationTest;
-import com.example.musinsarecommandproduct.enums.PriceType;
 import com.example.musinsarecommandproduct.exception.BadRequestType;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
@@ -15,7 +14,6 @@ import java.util.Set;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

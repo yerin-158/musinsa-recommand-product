@@ -13,6 +13,7 @@ import lombok.Getter;
 public enum BadRequestType {
 
   INVALID_REQUEST("ETC-1", "잘못된 요청입니다."),
+  INVALID_DATA("ETC-2", "올바르지 않은 데이터입니다."), //이거 다른 Exception으로 처리해야하지 않나?
 
   NOT_FOUND_PRODUCT("PRD-1", "상품이 존재하지 않습니다."),
   ALREADY_DELETED_PRODUCT("PRD-2", "이미 삭제된 상품입니다."),

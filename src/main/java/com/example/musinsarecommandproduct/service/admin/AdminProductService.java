@@ -52,6 +52,10 @@ public class AdminProductService {
     Category category = categoryRepository.findById(target.getCategoryId())
         .orElseThrow(() -> new BadRequestException(BadRequestType.NOT_FOUND_CATEGORY));
 
+    if (!brand.getId().equals(target.getBrandId()) || !category.getId().equals(target.getCategoryId())) {
+      new BadRequestException(BadRequestType.INVALID_DATA);
+    }
+
     return AdminProductMapper.INSTANCE.toAdminProductResponse(target, brand, category);
   }
 
