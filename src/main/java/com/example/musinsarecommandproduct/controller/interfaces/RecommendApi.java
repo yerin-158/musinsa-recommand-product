@@ -21,7 +21,7 @@ public interface RecommendApi {
   @GetMapping("/products")
   @Operation(summary = "추천 제품 조회", description = "특정 조건에 따라 추천 제품 목록을 조회합니다.")
   ResponseEntity<ProductSetResponse> getLowestPriceProductSet(
-      @Parameter(description = "브랜드 지정 유무") @RequestParam(name = "byBrand", defaultValue = "false") Boolean byBrand,
-      @Parameter(description = "byBrand = true인 경우, 브랜드id 필수값") @RequestParam(name = "brandId", required = false) Long brandId);
+      @Parameter(description = "브랜드 지정 유무", required = false) @RequestParam(name = "byBrand", defaultValue = "false", required = false) Boolean byBrand,
+      @Parameter(description = "byBrand = true인 경우, 브랜드id 필수값", required = false) @RequestParam(name = "brandId", required = false) Long brandId);
 
 }

@@ -31,7 +31,7 @@ public class RecommendController implements RecommendApi {
 
   @GetMapping("/lowest-price-set")
   public ResponseEntity<ProductSetResponse> getLowestPriceProductSet(
-      @RequestParam(name = "byBrand", defaultValue = "false") Boolean byBrand, @RequestParam(name = "brandId", required = false) Long brandId) {
+      @RequestParam(name = "byBrand", required = false, defaultValue = "false") Boolean byBrand, @RequestParam(name = "brandId", required = false) Long brandId) {
     if (byBrand && brandId == null) {
       throw new BadRequestException(BadRequestType.INVALID_REQUEST);
     }
