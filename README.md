@@ -37,9 +37,79 @@ npm i
 npm start
 ```
 ***
+# 패키지 구조
+패키지 구조에 대해 설명합니다.
+```
+.
+├── java
+│   └── com
+│       └── example
+│           └── musinsarecommandproduct
+│               ├── MusinsaRecommandProductApplication.java
+│               ├── configuration
+│               │   └── WebConfig.java
+│               ├── controller
+│               │   ├── admin
+│               │   │   ├── AdminBrandController.java
+│               │   │   ├── dto
+│               │   │   ├── interfaces
+│               │   │   └── mapper
+│               │   └── store
+│               │       ├── CategoryController.java
+│               │       ├── ProductController.java
+│               │       ├── RecommendController.java
+│               │       ├── dto
+│               │       ├── interfaces
+│               │       └── mapper
+│               ├── entitie
+│               │   ├── BaseEntity.java
+│               │   ├── Brand.java
+│               │   ├── Category.java
+│               │   ├── PriceStatistics.java
+│               │   ├── Product.java
+│               │   └── specs
+│               │       ├── BrandSpecs.java
+│               │       ├── PriceStatisticsSpecs.java
+│               │       └── ProductSpecs.java
+│               ├── enums
+│               │   ├── BrandStatus.java
+│               │   ├── PriceType.java
+│               │   └── ProductStatus.java
+│               ├── exception
+│               │   ├── BadRequestException.java
+│               │   └── BadRequestType.java
+│               ├── handler
+│               │   └── CustomExceptionHandler.java
+│               ├── repository
+│               │   ├── BrandRepository.java
+│               │   ├── CategoryRepository.java
+│               │   ├── PriceStatisticsRepository.java
+│               │   └── ProductRepository.java
+│               └── service
+│                   ├── admin
+│                   │   ├── AdminBrandService.java
+│                   │   ├── AdminPriceStatisticsService.java
+│                   │   ├── AdminProductService.java
+│                   │   └── validator
+│                   └── store
+│                       ├── BrandService.java
+│                       ├── CategoryService.java
+│                       ├── PriceStatisticsService.java
+│                       ├── ProductFacade.java
+│                       ├── ProductService.java
+│                       └── RecommendService.java
+└── resources
+    ├── application.yml
+    ├── h2db
+    │   ├── data.sql
+    │   └── schema.sql
+    ├── static
+    └── templates
+```
+
 # 데이터베이스 스키마
 
-이 문서는 Musinsa Recommend Product 애플리케이션의 데이터베이스 스키마에 대해 설명합니다.
+Musinsa Recommend Product 애플리케이션의 데이터베이스 스키마에 대해 설명합니다.
 
 ## 테이블
 
