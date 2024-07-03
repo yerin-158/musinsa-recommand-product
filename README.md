@@ -4,7 +4,7 @@
 
 ## 스펙
 ### 서버
-- java
+- java17
 - spring boot 3
 - spring-mvc
 - h2db
