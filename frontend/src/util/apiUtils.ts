@@ -10,6 +10,7 @@ import {
 import {ProductByCategoryResponse, ProductSetResponse} from '../model/store/Product';
 import {PageResponse} from '../model/ResponseWrapper';
 import {PriceType} from '../model/types';
+import {CategoryResponse} from '../model/store/Category';
 
 // Axios 인스턴스 생성
 const apiClient = axios.create({
@@ -28,6 +29,10 @@ export const addBrand = async (request: AdminBrandAddRequest): Promise<AdminBran
 export const getBrand = async (brandId: number): Promise<AdminBrandResponse> => {
   const response = await apiClient.get<AdminBrandResponse>(`/admin/api/v1/brands/${brandId}`);
   return response.data;
+};
+
+export const activateBrand = async (brandId: number): Promise<void> => {
+  await apiClient.put(`/admin/api/v1/brands/${brandId}/activate`);
 };
 
 export const getAllBrands = async (): Promise<AdminBrandResponse[]> => {
@@ -122,6 +127,8 @@ export const getLowestPriceProductSet = async (
   return response.data;
 };
 
-export const activateBrand = async (brandId: number): Promise<void> => {
-  await apiClient.put(`/admin/api/v1/brands/${brandId}/activate`);
+// CategoryApi
+export const getAllCategories = async (): Promise<CategoryResponse[]> => {
+  const response = await apiClient.get(`/api/v1/categories`);
+  return response.data;
 };

@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {AdminProductAddRequest, AdminProductFullInfoResponse} from '../../model/admin/AdminProduct';
 import '../../css/admin.css';
+import {CategoryResponse} from '../../model/store/Category';
+import useFetchCategories from '../../hooks/useFetchCategories';
 
 interface ProductEditFormProps {
   selectedBrandId: number;
@@ -16,6 +18,19 @@ const ProductEditForm: React.FC<ProductEditFormProps> = ({selectedBrandId, produ
     status: 'EXPOSED',
     brandId: selectedBrandId,
   });
+  const [categories, setCategories] = useState<CategoryResponse[]>([]);
+  const fetchCategories = useFetchCategories();
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const response = await fetchCategories({
+        errorCallback: () => console.error('Failed to fetch categories'),
+      });
+      setCategories(response || []);
+    };
+
+    getCategories();
+  }, [fetchCategories]);
 
   useEffect(() => {
     if (product) {
@@ -62,14 +77,9 @@ const ProductEditForm: React.FC<ProductEditFormProps> = ({selectedBrandId, produ
             <select
               value={updatedProduct.categoryId}
               onChange={(e) => setUpdatedProduct({...updatedProduct, categoryId: +e.target.value})}>
-              <option value={1}>상의</option>
-              <option value={2}>아우터</option>
-              <option value={3}>바지</option>
-              <option value={4}>스니커즈</option>
-              <option value={5}>가방</option>
-              <option value={6}>모자</option>
-              <option value={7}>양말</option>
-              <option value={8}>악세서리</option>
+              {categories.map(({id, name}) => (
+                <option value={id}>{name}</option>
+              ))}
             </select>
           </div>
           <div className="button-wrapper">

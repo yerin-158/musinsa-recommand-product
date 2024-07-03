@@ -1,9 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import '../../css/admin.css';
 import {AdminProductAddRequest} from '../../model/admin/AdminProduct';
 import {addBrand, addProductToBrand} from '../../util/apiUtils';
 import ErrorBox from '../common/ErrorBox';
 import {AdminBrandResponse} from '../../model/admin/AdminBrand';
+import {CategoryResponse} from '../../model/store/Category';
+import useFetchCategories from '../../hooks/useFetchCategories';
 
 interface BrandProductAddFormProps {
   selectedBrand: AdminBrandResponse | undefined;
@@ -23,6 +25,19 @@ const ProductForm: React.FC<ProductFormProps> = ({selectedBrand, setError, handl
     brandId: 0,
     status: 'EXPOSED',
   });
+  const [categories, setCategories] = useState<CategoryResponse[]>([]);
+  const fetchCategories = useFetchCategories();
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const response = await fetchCategories({
+        errorCallback: () => console.error('Failed to fetch categories'),
+      });
+      setCategories(response || []);
+    };
+
+    getCategories();
+  }, [fetchCategories]);
 
   const handleAddProduct = async () => {
     if (selectedBrand && selectedBrand.id > 0) {
@@ -57,14 +72,9 @@ const ProductForm: React.FC<ProductFormProps> = ({selectedBrand, setError, handl
             <select
               value={newProduct.categoryId}
               onChange={(e) => setNewProduct({...newProduct, categoryId: +e.target.value})}>
-              <option value={1}>상의</option>
-              <option value={2}>아우터</option>
-              <option value={3}>바지</option>
-              <option value={4}>스니커즈</option>
-              <option value={5}>가방</option>
-              <option value={6}>모자</option>
-              <option value={7}>양말</option>
-              <option value={8}>악세서리</option>
+              {categories.map(({id, name}) => (
+                <option value={id}>{name}</option>
+              ))}
             </select>
             <button onClick={handleAddProduct}>상품 추가하기</button>
           </div>

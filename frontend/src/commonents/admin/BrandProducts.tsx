@@ -1,8 +1,9 @@
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {AdminProductFullInfoResponse} from '../../model/admin/AdminProduct';
 import '../../css/brandProducts.css';
 import Pagination from '../common/Pagination';
-import {categories} from '../../util/categoryUtils';
+import useFetchCategories from '../../hooks/useFetchCategories';
+import {CategoryResponse} from '../../model/store/Category';
 
 interface BrandProductsProps {
   products: AdminProductFullInfoResponse[] | null;
@@ -23,6 +24,20 @@ const BrandProducts: React.FC<BrandProductsProps> = ({
   onActivateBrand,
   brandIsActive,
 }) => {
+  const [categories, setCategories] = useState<CategoryResponse[]>([]);
+  const fetchCategories = useFetchCategories();
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const response = await fetchCategories({
+        errorCallback: () => console.error('Failed to fetch categories'),
+      });
+      setCategories(response || []);
+    };
+
+    getCategories();
+  }, [fetchCategories]);
+
   const canActivateBrand = useMemo(() => {
     if (!products || products.length < categories.length) {
       return false;
