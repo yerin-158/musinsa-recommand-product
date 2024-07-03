@@ -104,7 +104,7 @@ public class AdminProductService {
 
     productRepository.save(product);
 
-    if (!product.isDraft()) {
+    if (!product.isDraft() && targetBrand.isExposed()) {
       adminPriceStatisticsService.updatePriceStatistics(product);
     }
 
