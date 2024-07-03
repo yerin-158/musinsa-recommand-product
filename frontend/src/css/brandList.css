@@ -1,0 +1,25 @@
+.brand-list {
+  width: 30%;
+  background-color: #000000;
+  color: white;
+  padding: 20px;
+  text-align: left;
+  border-radius: 8px;
+  margin-right: 20px;
+  font-size: 20px; /* 브랜드 목록 폰트 크기 설정 */
+}
+
+.brand-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.brand-list li {
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.brand-list li:hover {
+  background-color: white;
+  color: #333;
+}

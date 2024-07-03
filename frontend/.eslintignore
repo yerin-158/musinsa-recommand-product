@@ -1,0 +1,13 @@
+node_modules/**
+temp_markup/**
+temp_markup_m/**
+temp_resource/**
+dist/**
+src/libs/**
+public/**
+test/**
+webpack/**
+lib/**
+specs/**
+sw.js
+*.md

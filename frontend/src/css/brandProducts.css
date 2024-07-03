@@ -1,0 +1,75 @@
+.product-list {
+  width: 60%;
+  border: 1px solid black;
+  padding: 20px;
+  text-align: left;
+  border-radius: 8px;
+  font-size: 20px; /* 제품 목록 폰트 크기 설정 */
+}
+
+.product-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.product-list li {
+  margin: 10px 0;
+}
+
+.product-list li:hover {
+  background-color: #333;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.product-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.product-list-header button {
+  padding: 5px 10px;
+  border: none;
+  background-color: #333;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.product-list-header brand-active-button {
+  padding: 5px 10px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.product-list-header button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.product-edit-form {
+  margin-top: 20px;
+  border: 1px solid black;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.product-edit-form input,
+.product-edit-form select {
+  margin-right: 10px;
+  padding: 5px;
+  font-size: 16px;
+}
+
+.product-edit-form button {
+  padding: 5px 10px;
+  border: none;
+  background-color: #333;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}

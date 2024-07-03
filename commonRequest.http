@@ -1,0 +1,9 @@
+### 일반 유저 호출
+
+### 특정 카테고리에서 가장 저렴한 상품, 가장 비싼 상품 가져오기
+GET http://{{host}}{{productBasePath}}/summary?categoryId=1&priceType=LOW,HIGH
+Accept: application/json
+
+### 브랜드 전체 가져오기
+GET http://{{host}}{{recommendBasePath}}/lowest-price-set
+Accept: application/json
