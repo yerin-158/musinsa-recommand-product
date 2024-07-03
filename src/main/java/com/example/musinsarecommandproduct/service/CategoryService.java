@@ -1,5 +1,7 @@
 package com.example.musinsarecommandproduct.service;
 
+import com.example.musinsarecommandproduct.controller.dto.CategorySimpleResponse;
+import com.example.musinsarecommandproduct.controller.mapper.CategoryMapper;
 import com.example.musinsarecommandproduct.entitie.Category;
 import com.example.musinsarecommandproduct.exception.BadRequestException;
 import com.example.musinsarecommandproduct.exception.BadRequestType;
@@ -8,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by yerin-158 on 6/30/24.
@@ -28,5 +31,9 @@ public class CategoryService {
 
   public List<Category> findAll() {
     return categoryRepository.findAll();
+  }
+
+  public List<CategorySimpleResponse> findAllToResponse() {
+    return categoryRepository.findAll().stream().map(category -> CategoryMapper.INSTANCE.toCategorySimpleResponse(category)).collect(Collectors.toList());
   }
 }
