@@ -5,7 +5,7 @@ import com.example.musinsarecommandproduct.controller.admin.dto.AdminProductModi
 import com.example.musinsarecommandproduct.controller.admin.dto.AdminProductResponse;
 import com.example.musinsarecommandproduct.controller.admin.dto.AdminProductStatusModifyRequest;
 import com.example.musinsarecommandproduct.controller.admin.mapper.AdminProductMapper;
-import com.example.musinsarecommandproduct.controller.dto.PageResponse;
+import com.example.musinsarecommandproduct.controller.store.dto.PageResponse;
 import com.example.musinsarecommandproduct.entitie.Brand;
 import com.example.musinsarecommandproduct.entitie.Category;
 import com.example.musinsarecommandproduct.entitie.Product;

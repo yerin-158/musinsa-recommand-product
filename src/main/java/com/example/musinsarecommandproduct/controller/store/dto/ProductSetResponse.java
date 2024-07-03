@@ -1,4 +1,4 @@
-package com.example.musinsarecommandproduct.controller.dto;
+package com.example.musinsarecommandproduct.controller.store.dto;
 
 import java.util.List;
 

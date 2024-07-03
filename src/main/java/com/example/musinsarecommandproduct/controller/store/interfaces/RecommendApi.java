@@ -1,6 +1,6 @@
-package com.example.musinsarecommandproduct.controller.interfaces;
+package com.example.musinsarecommandproduct.controller.store.interfaces;
 
-import com.example.musinsarecommandproduct.controller.dto.ProductSetResponse;
+import com.example.musinsarecommandproduct.controller.store.dto.ProductSetResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;

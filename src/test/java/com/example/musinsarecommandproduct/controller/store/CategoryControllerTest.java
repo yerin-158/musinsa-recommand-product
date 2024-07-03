@@ -1,4 +1,4 @@
-package com.example.musinsarecommandproduct.controller;
+package com.example.musinsarecommandproduct.controller.store;
 
 import com.example.musinsarecommandproduct.IntegrationTest;
 import org.junit.jupiter.api.Test;

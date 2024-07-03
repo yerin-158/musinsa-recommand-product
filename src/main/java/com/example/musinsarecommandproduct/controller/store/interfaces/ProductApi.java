@@ -1,6 +1,6 @@
-package com.example.musinsarecommandproduct.controller.interfaces;
+package com.example.musinsarecommandproduct.controller.store.interfaces;
 
-import com.example.musinsarecommandproduct.controller.dto.ProductByCategoryResponse;
+import com.example.musinsarecommandproduct.controller.store.dto.ProductByCategoryResponse;
 import com.example.musinsarecommandproduct.enums.PriceType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

@@ -2,7 +2,7 @@ package com.example.musinsarecommandproduct.controller.admin;
 
 import com.example.musinsarecommandproduct.controller.admin.dto.*;
 import com.example.musinsarecommandproduct.controller.admin.interfaces.AdminBrandApi;
-import com.example.musinsarecommandproduct.controller.dto.PageResponse;
+import com.example.musinsarecommandproduct.controller.store.dto.PageResponse;
 import com.example.musinsarecommandproduct.service.admin.AdminBrandService;
 import com.example.musinsarecommandproduct.service.admin.AdminProductService;
 import lombok.RequiredArgsConstructor;

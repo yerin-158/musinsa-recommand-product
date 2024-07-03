@@ -1,4 +1,4 @@
-package com.example.musinsarecommandproduct.controller.dto;
+package com.example.musinsarecommandproduct.controller.store.dto;
 
 /**
  * Created by yerin-158 on 6/30/24.

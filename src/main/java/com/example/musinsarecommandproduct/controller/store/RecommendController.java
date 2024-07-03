@@ -1,19 +1,16 @@
-package com.example.musinsarecommandproduct.controller;
+package com.example.musinsarecommandproduct.controller.store;
 
-import com.example.musinsarecommandproduct.controller.dto.ProductResponse;
-import com.example.musinsarecommandproduct.controller.dto.ProductSetResponse;
-import com.example.musinsarecommandproduct.controller.interfaces.RecommendApi;
+import com.example.musinsarecommandproduct.controller.store.dto.ProductSetResponse;
+import com.example.musinsarecommandproduct.controller.store.interfaces.RecommendApi;
 import com.example.musinsarecommandproduct.exception.BadRequestException;
 import com.example.musinsarecommandproduct.exception.BadRequestType;
-import com.example.musinsarecommandproduct.service.RecommendService;
+import com.example.musinsarecommandproduct.service.store.RecommendService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * Created by yerin-158 on 6/30/24.

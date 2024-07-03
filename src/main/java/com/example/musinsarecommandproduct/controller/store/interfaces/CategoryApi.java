@@ -1,4 +1,4 @@
-package com.example.musinsarecommandproduct.controller.interfaces;
+package com.example.musinsarecommandproduct.controller.store.interfaces;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 

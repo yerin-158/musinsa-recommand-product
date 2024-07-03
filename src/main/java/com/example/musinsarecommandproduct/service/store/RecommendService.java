@@ -1,7 +1,7 @@
-package com.example.musinsarecommandproduct.service;
+package com.example.musinsarecommandproduct.service.store;
 
-import com.example.musinsarecommandproduct.controller.dto.ProductSetResponse;
-import com.example.musinsarecommandproduct.controller.mapper.ProductMapper;
+import com.example.musinsarecommandproduct.controller.store.dto.ProductSetResponse;
+import com.example.musinsarecommandproduct.controller.store.mapper.ProductMapper;
 import com.example.musinsarecommandproduct.entitie.Brand;
 import com.example.musinsarecommandproduct.entitie.Category;
 import com.example.musinsarecommandproduct.entitie.PriceStatistics;

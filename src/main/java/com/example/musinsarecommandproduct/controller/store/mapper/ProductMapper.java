@@ -1,9 +1,9 @@
-package com.example.musinsarecommandproduct.controller.mapper;
+package com.example.musinsarecommandproduct.controller.store.mapper;
 
-import com.example.musinsarecommandproduct.controller.dto.ProductByCategoryResponse;
-import com.example.musinsarecommandproduct.controller.dto.ProductResponse;
-import com.example.musinsarecommandproduct.controller.dto.ProductSetResponse;
-import com.example.musinsarecommandproduct.controller.dto.ProductSimpleResponse;
+import com.example.musinsarecommandproduct.controller.store.dto.ProductByCategoryResponse;
+import com.example.musinsarecommandproduct.controller.store.dto.ProductResponse;
+import com.example.musinsarecommandproduct.controller.store.dto.ProductSetResponse;
+import com.example.musinsarecommandproduct.controller.store.dto.ProductSimpleResponse;
 import com.example.musinsarecommandproduct.entitie.Brand;
 import com.example.musinsarecommandproduct.entitie.Category;
 import com.example.musinsarecommandproduct.entitie.Product;

@@ -1,7 +1,7 @@
 package com.example.musinsarecommandproduct.controller.admin.interfaces;
 
 import com.example.musinsarecommandproduct.controller.admin.dto.*;
-import com.example.musinsarecommandproduct.controller.dto.PageResponse;
+import com.example.musinsarecommandproduct.controller.store.dto.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;

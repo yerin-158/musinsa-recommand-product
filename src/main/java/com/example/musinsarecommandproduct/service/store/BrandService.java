@@ -1,4 +1,4 @@
-package com.example.musinsarecommandproduct.service;
+package com.example.musinsarecommandproduct.service.store;
 
 import com.example.musinsarecommandproduct.entitie.Brand;
 import com.example.musinsarecommandproduct.repository.BrandRepository;

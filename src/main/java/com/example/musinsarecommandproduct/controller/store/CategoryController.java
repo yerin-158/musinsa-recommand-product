@@ -1,8 +1,8 @@
-package com.example.musinsarecommandproduct.controller;
+package com.example.musinsarecommandproduct.controller.store;
 
-import com.example.musinsarecommandproduct.controller.dto.CategorySimpleResponse;
-import com.example.musinsarecommandproduct.controller.interfaces.CategoryApi;
-import com.example.musinsarecommandproduct.service.CategoryService;
+import com.example.musinsarecommandproduct.controller.store.dto.CategorySimpleResponse;
+import com.example.musinsarecommandproduct.controller.store.interfaces.CategoryApi;
+import com.example.musinsarecommandproduct.service.store.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

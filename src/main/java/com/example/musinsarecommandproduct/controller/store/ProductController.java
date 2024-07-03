@@ -1,11 +1,11 @@
-package com.example.musinsarecommandproduct.controller;
+package com.example.musinsarecommandproduct.controller.store;
 
-import com.example.musinsarecommandproduct.controller.dto.ProductByCategoryResponse;
-import com.example.musinsarecommandproduct.controller.interfaces.ProductApi;
+import com.example.musinsarecommandproduct.controller.store.dto.ProductByCategoryResponse;
+import com.example.musinsarecommandproduct.controller.store.interfaces.ProductApi;
 import com.example.musinsarecommandproduct.enums.PriceType;
 import com.example.musinsarecommandproduct.exception.BadRequestException;
 import com.example.musinsarecommandproduct.exception.BadRequestType;
-import com.example.musinsarecommandproduct.service.ProductService;
+import com.example.musinsarecommandproduct.service.store.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
