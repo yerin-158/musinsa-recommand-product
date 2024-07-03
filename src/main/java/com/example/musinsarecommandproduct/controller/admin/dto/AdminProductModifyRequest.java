@@ -7,4 +7,4 @@ package com.example.musinsarecommandproduct.controller.admin.dto;
  * @version 6/30/24.
  * @implNote First created
  */
-public record AdminProductModifyRequest(String name, Integer price) {}
+public record AdminProductModifyRequest(String name, Integer price, Long categoryId) {}

@@ -14,6 +14,7 @@ import com.example.musinsarecommandproduct.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
@@ -35,6 +36,7 @@ public class AdminPriceStatisticsService {
   private final PriceStatisticsRepository priceStatisticsRepository;
   private final ProductRepository productRepository;
 
+  @Transactional
   public void updatePriceStatistics(Product product) {
     Specification<PriceStatistics> specification = Specification
         .where(PriceStatisticsSpecs.equalsBrandId(product.getBrandId()))
@@ -68,6 +70,7 @@ public class AdminPriceStatisticsService {
     priceStatisticsRepository.save(nowPriceStatistics);
   }
 
+  @Transactional
   public void addByBrand(Brand brand) {
     // 브랜드 ID로 모든 상품 가져오기
     Specification<Product> specification = Specification.where(ProductSpecs.equalsBrandId(brand.getId()));

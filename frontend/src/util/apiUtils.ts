@@ -9,7 +9,7 @@ import {
 } from '../model/admin/AdminProduct';
 import {ProductByCategoryResponse, ProductSetResponse} from '../model/store/Product';
 import {PageResponse} from '../model/ResponseWrapper';
-import {PriceType} from '../model/types';
+import {BrandStatus, PriceType} from '../model/types';
 import {CategoryResponse} from '../model/store/Category';
 
 // Axios 인스턴스 생성
@@ -31,8 +31,8 @@ export const getBrand = async (brandId: number): Promise<AdminBrandResponse> => 
   return response.data;
 };
 
-export const activateBrand = async (brandId: number): Promise<void> => {
-  await apiClient.put(`/admin/api/v1/brands/${brandId}/activate`);
+export const updateBrandStatus = async (brandId: number, status: BrandStatus): Promise<void> => {
+  await apiClient.put(`/admin/api/v1/brands/${brandId}/status`, {status});
 };
 
 export const getAllBrands = async (): Promise<AdminBrandResponse[]> => {

@@ -9,9 +9,6 @@ interface PaginationProps {
 
 const Pagination: React.FC<PaginationProps> = ({currentPage, totalPages, onPageChange}) => {
   const pages = Array.from({length: totalPages}, (_, i) => i);
-  console.log('current', currentPage);
-  console.log('totalPages', totalPages);
-  console.log('pages', pages);
 
   return (
     <div className="pagination">

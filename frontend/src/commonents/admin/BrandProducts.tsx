@@ -1,9 +1,11 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {AdminProductFullInfoResponse} from '../../model/admin/AdminProduct';
 import '../../css/brandProducts.css';
 import Pagination from '../common/Pagination';
 import useFetchCategories from '../../hooks/useFetchCategories';
 import {CategoryResponse} from '../../model/store/Category';
+import {BrandStatus} from '../../model/types';
+import {convertProductStatus} from '../../util/textUtils';
 
 interface BrandProductsProps {
   products: AdminProductFullInfoResponse[] | null;
@@ -11,7 +13,7 @@ interface BrandProductsProps {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
-  onActivateBrand: () => void;
+  changeBrandStatus: (status: BrandStatus) => void;
   brandIsActive: boolean;
 }
 
@@ -21,7 +23,7 @@ const BrandProducts: React.FC<BrandProductsProps> = ({
   currentPage,
   totalPages,
   onPageChange,
-  onActivateBrand,
+  changeBrandStatus,
   brandIsActive,
 }) => {
   const [categories, setCategories] = useState<CategoryResponse[]>([]);
@@ -36,7 +38,7 @@ const BrandProducts: React.FC<BrandProductsProps> = ({
     };
 
     getCategories();
-  }, [fetchCategories]);
+  }, []);
 
   const canActivateBrand = useMemo(() => {
     if (!products || products.length < categories.length) {
@@ -46,20 +48,40 @@ const BrandProducts: React.FC<BrandProductsProps> = ({
     return categories.every((category) => categoryIdsWithProducts.has(category.id));
   }, [products]);
 
+  const renderUpdateBrandStatusButton = useCallback(() => {
+    if (!products) {
+      return null;
+    }
+
+    if (brandIsActive) {
+      return <button onClick={() => changeBrandStatus('NOT_EXPOSED')}>브랜드 비활성화</button>;
+    }
+
+    return (
+      <button
+        className="brand-active-button"
+        style={{backgroundColor: canActivateBrand ? '#007bff' : undefined}}
+        onClick={() => changeBrandStatus('EXPOSED')}
+        disabled={!canActivateBrand}>
+        브랜드 활성화
+      </button>
+    );
+  }, [products, brandIsActive]);
+
   return (
     <div className="product-list">
       <div className="product-list-header">
         <h4>브랜드 상품</h4>
-        {!brandIsActive && products && (
-          <button onClick={onActivateBrand} disabled={!canActivateBrand}>
-            브랜드 활성화
-          </button>
-        )}
+        {renderUpdateBrandStatusButton()}
       </div>
       <ul>
         {products?.map((product) => (
           <li key={product.product.id} onClick={() => onProductClick(product)}>
             [{product.category.name}] {product.product.name} - ₩{product.product.price.toLocaleString('ko-KR')}
+            <span style={{fontSize: '12px', color: product.product.status === 'DELETED' ? 'red' : '#007bff'}}>
+              {' '}
+              ({convertProductStatus(product.product.status)})
+            </span>
           </li>
         ))}
       </ul>

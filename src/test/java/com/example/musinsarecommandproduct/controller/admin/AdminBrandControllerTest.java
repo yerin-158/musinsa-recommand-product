@@ -389,7 +389,7 @@ public class AdminBrandControllerTest extends IntegrationTest {
   @DirtiesContext
   @Description("특정 상품의 이름을 변경할 수 있다.")
   public void update_product_success_test1() {
-    AdminProductModifyRequest request = new AdminProductModifyRequest("updated-name", savedProduct.getPrice());
+    AdminProductModifyRequest request = new AdminProductModifyRequest("updated-name", savedProduct.getPrice(), savedCategory.getId());
 
     given()
         .contentType(ContentType.JSON)
@@ -414,7 +414,7 @@ public class AdminBrandControllerTest extends IntegrationTest {
   @DirtiesContext
   @Description("특정 상품의 가격을 변경할 수 있다.")
   public void update_product_success_test2() {
-    AdminProductModifyRequest request = new AdminProductModifyRequest(savedProduct.getName(), 99999);
+    AdminProductModifyRequest request = new AdminProductModifyRequest(savedProduct.getName(), 99999, savedCategory.getId());
 
     given()
         .contentType(ContentType.JSON)
@@ -440,7 +440,7 @@ public class AdminBrandControllerTest extends IntegrationTest {
   @Description("상품 수정 시도 시 상품이 존재하지 않으면 400 에러가 발생한다.")
   public void update_product_not_found() {
     Long invalidId = 9999L;
-    AdminProductModifyRequest request = new AdminProductModifyRequest(savedProduct.getName(), 99999);
+    AdminProductModifyRequest request = new AdminProductModifyRequest(savedProduct.getName(), 99999, savedCategory.getId());
 
     given()
         .contentType(ContentType.JSON)
@@ -461,7 +461,7 @@ public class AdminBrandControllerTest extends IntegrationTest {
   @Description("상품 수정 변경 시도 시 브랜드가 존재하지 않으면 400 에러가 발생한다.")
   public void update_product_not_found_brand() {
     Long invalidId = 9999L;
-    AdminProductModifyRequest request = new AdminProductModifyRequest(savedProduct.getName(), 99999);
+    AdminProductModifyRequest request = new AdminProductModifyRequest(savedProduct.getName(), 99999, savedCategory.getId());
 
     given()
         .contentType(ContentType.JSON)
@@ -493,7 +493,7 @@ public class AdminBrandControllerTest extends IntegrationTest {
 
 
     // 수정 시도
-    AdminProductModifyRequest request = new AdminProductModifyRequest("deleted", 1000);
+    AdminProductModifyRequest request = new AdminProductModifyRequest("deleted", 1000, savedCategory.getId());
 
     given()
         .contentType(ContentType.JSON)

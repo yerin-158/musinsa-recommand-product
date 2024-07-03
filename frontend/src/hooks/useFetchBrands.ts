@@ -7,13 +7,13 @@ export default function useFetchBrand() {
     errorCallback,
   }: {
     callback: (brandsResponse: AdminBrandResponse[]) => void;
-    errorCallback: () => void;
+    errorCallback: (err: any) => void;
   }) => {
     try {
       const brandsResponse = await getAllBrands();
       callback(brandsResponse);
     } catch (err) {
-      errorCallback();
+      errorCallback(err);
     }
   };
 

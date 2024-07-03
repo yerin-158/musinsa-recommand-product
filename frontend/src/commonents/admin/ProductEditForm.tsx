@@ -8,9 +8,15 @@ interface ProductEditFormProps {
   selectedBrandId: number;
   product: AdminProductFullInfoResponse | null;
   onUpdateProduct: (updatedProduct: AdminProductAddRequest) => void;
+  onDeleteProduct: () => void;
 }
 
-const ProductEditForm: React.FC<ProductEditFormProps> = ({selectedBrandId, product, onUpdateProduct}) => {
+const ProductEditForm: React.FC<ProductEditFormProps> = ({
+  selectedBrandId,
+  product,
+  onUpdateProduct,
+  onDeleteProduct,
+}) => {
   const [updatedProduct, setUpdatedProduct] = useState<AdminProductAddRequest>({
     name: '',
     price: 0,
@@ -30,7 +36,7 @@ const ProductEditForm: React.FC<ProductEditFormProps> = ({selectedBrandId, produ
     };
 
     getCategories();
-  }, [fetchCategories]);
+  }, []);
 
   useEffect(() => {
     if (product) {
@@ -47,6 +53,12 @@ const ProductEditForm: React.FC<ProductEditFormProps> = ({selectedBrandId, produ
   const handleUpdate = () => {
     if (product) {
       onUpdateProduct(updatedProduct);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (product) {
+      onDeleteProduct();
     }
   };
 
@@ -78,13 +90,18 @@ const ProductEditForm: React.FC<ProductEditFormProps> = ({selectedBrandId, produ
               value={updatedProduct.categoryId}
               onChange={(e) => setUpdatedProduct({...updatedProduct, categoryId: +e.target.value})}>
               {categories.map(({id, name}) => (
-                <option value={id}>{name}</option>
+                <option value={id} key={`category_${id}`}>
+                  {name}
+                </option>
               ))}
             </select>
           </div>
           <div className="button-wrapper">
             <button className="primary-button" onClick={handleUpdate}>
               상품 수정하기
+            </button>
+            <button onClick={handleDelete} style={{marginLeft: '10px', backgroundColor: 'red', color: 'white'}}>
+              상품 삭제하기
             </button>
           </div>
         </div>

@@ -113,12 +113,12 @@ public class AdminProductService {
 
   @Transactional
   public AdminProductResponse modifyDetails(Long brandId, Long productId, AdminProductModifyRequest request) {
-    requiredExistValidator.validate(brandId, productId, null);
+    requiredExistValidator.validate(brandId, productId, request.categoryId());
     productModifyRequestValidator.validate(request, productId);
 
     Product target = productRepository.findById(productId).get();
     Brand brand = brandRepository.findById(brandId).get();
-    Category category = categoryRepository.findById(target.getCategoryId()).get();
+    Category category = categoryRepository.findById(request.categoryId()).get();
     Boolean changePrice = !target.getPrice().equals(request.price());
 
     Product updated = AdminProductMapper.INSTANCE.toProduct(target, request);

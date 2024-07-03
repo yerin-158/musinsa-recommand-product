@@ -36,6 +36,12 @@ cd frontend
 npm i
 npm start
 ```
+
+### 프론트 확인
+```
+http://localhost:3000/
+```
+
 ***
 # 패키지 구조
 패키지 구조에 대해 설명합니다.

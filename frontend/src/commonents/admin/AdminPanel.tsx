@@ -1,5 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {activateBrand, getAllBrands, getBrandProducts, modifyBrandProduct} from '../../util/apiUtils';
+import {
+  updateBrandStatus,
+  getAllBrands,
+  getBrandProducts,
+  modifyBrandProduct,
+  deleteBrandProduct,
+} from '../../util/apiUtils';
 import '../../css/admin.css';
 import BrandList from './BrandList';
 import BrandProducts from './BrandProducts';
@@ -8,13 +14,17 @@ import {AdminBrandResponse} from '../../model/admin/AdminBrand';
 import {AdminProductAddRequest, AdminProductFullInfoResponse} from '../../model/admin/AdminProduct';
 import BrandProductAddForm from './BrandProductAddForm';
 import useFetchBrand from '../../hooks/useFetchBrands';
+import {BrandStatus} from '../../model/types';
+import {AxiosError} from 'axios';
+import {BadRequestErrorResponse} from '../../model/common/BadRequestErrorResponse';
+import ErrorBox from '../common/ErrorBox';
 
 const AdminPanel: React.FC = () => {
   const [brands, setBrands] = useState<AdminBrandResponse[]>([]);
   const [selectedBrand, setSelectedBrand] = useState<AdminBrandResponse>();
   const [products, setProducts] = useState<AdminProductFullInfoResponse[] | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<AdminProductFullInfoResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<BadRequestErrorResponse | null>(null);
 
   const [fetchNewBrand, setFetchNewBrand] = useState(true);
   const [fetchNewProduct, setFetchNewProduct] = useState(true);
@@ -29,8 +39,13 @@ const AdminPanel: React.FC = () => {
         setBrands(brandsResponse);
         setFetchNewBrand(false);
       },
-      errorCallback: () => {
-        setError('Failed to fetch brands');
+      errorCallback: (err) => {
+        const axiosError = err as AxiosError;
+        if (axiosError.response && axiosError.response.status === 400) {
+          setError(axiosError.response.data as BadRequestErrorResponse);
+        } else {
+          alert(err);
+        }
       },
     });
   };
@@ -50,7 +65,12 @@ const AdminPanel: React.FC = () => {
           setFetchNewProduct(false);
           setTotalPages(productsResponse.totalPages);
         } catch (err) {
-          setError('Failed to fetch products');
+          const axiosError = err as AxiosError;
+          if (axiosError.response && axiosError.response.status === 400) {
+            setError(axiosError.response.data as BadRequestErrorResponse);
+          } else {
+            alert(err);
+          }
         }
       }
     };
@@ -72,11 +92,32 @@ const AdminPanel: React.FC = () => {
     if (selectedProduct && selectedBrand) {
       try {
         await modifyBrandProduct(selectedBrand.id, selectedProduct.product.id, updatedProduct);
-        const updatedProducts = await getBrandProducts(selectedBrand.id);
-        setProducts(updatedProducts.content);
+        setFetchNewProduct(true);
         setSelectedProduct(null);
       } catch (err) {
-        setError('Failed to update product');
+        const axiosError = err as AxiosError;
+        if (axiosError.response && axiosError.response.status === 400) {
+          setError(axiosError.response.data as BadRequestErrorResponse);
+        } else {
+          alert(err);
+        }
+      }
+    }
+  };
+
+  const handleDeleteProduct = async () => {
+    if (selectedProduct && selectedBrand) {
+      try {
+        await deleteBrandProduct(selectedBrand.id, selectedProduct.product.id);
+        setFetchNewProduct(true);
+        setSelectedProduct(null);
+      } catch (err) {
+        const axiosError = err as AxiosError;
+        if (axiosError.response && axiosError.response.status === 400) {
+          setError(axiosError.response.data as BadRequestErrorResponse);
+        } else {
+          alert(err);
+        }
       }
     }
   };
@@ -85,20 +126,21 @@ const AdminPanel: React.FC = () => {
     setCurrentPage(page);
   };
 
-  const handleActivateBrand = async () => {
+  const handleChangeBrandStatus = async (status: BrandStatus) => {
     if (selectedBrand) {
       try {
-        await activateBrand(selectedBrand.id);
+        await updateBrandStatus(selectedBrand.id, status);
         handleFetchBrands();
       } catch (err) {
-        setError('Failed to activate brand');
+        const axiosError = err as AxiosError;
+        if (axiosError.response && axiosError.response.status === 400) {
+          setError(axiosError.response.data as BadRequestErrorResponse);
+        } else {
+          alert(err);
+        }
       }
     }
   };
-
-  if (error) {
-    return <h5>에러가 발생했습니다. {error}</h5>;
-  }
 
   return (
     <div className="admin-content">
@@ -107,6 +149,7 @@ const AdminPanel: React.FC = () => {
         handleAddBrandSuccess={() => setFetchNewBrand(true)}
         handleAddProductSuccess={() => setFetchNewProduct(true)}
       />
+      <ErrorBox error={error} />
       <div className="admin-panel">
         <BrandList brands={brands} onBrandChange={handleBrandChange} />
         <BrandProducts
@@ -116,7 +159,7 @@ const AdminPanel: React.FC = () => {
           totalPages={totalPages}
           onPageChange={handlePageChange}
           brandIsActive={selectedBrand?.status === 'EXPOSED'}
-          onActivateBrand={handleActivateBrand}
+          changeBrandStatus={handleChangeBrandStatus}
         />
       </div>
       {selectedProduct && (
@@ -124,6 +167,7 @@ const AdminPanel: React.FC = () => {
           selectedBrandId={selectedBrand?.id || 0}
           product={selectedProduct}
           onUpdateProduct={handleUpdateProduct}
+          onDeleteProduct={handleDeleteProduct}
         />
       )}
     </div>

@@ -6,6 +6,8 @@ import ErrorBox from '../common/ErrorBox';
 import {AdminBrandResponse} from '../../model/admin/AdminBrand';
 import {CategoryResponse} from '../../model/store/Category';
 import useFetchCategories from '../../hooks/useFetchCategories';
+import {BadRequestErrorResponse} from '../../model/common/BadRequestErrorResponse';
+import {AxiosError} from 'axios';
 
 interface BrandProductAddFormProps {
   selectedBrand: AdminBrandResponse | undefined;
@@ -13,11 +15,9 @@ interface BrandProductAddFormProps {
   handleAddProductSuccess: () => void;
 }
 
-interface ProductFormProps extends Pick<BrandProductAddFormProps, 'selectedBrand' | 'handleAddProductSuccess'> {
-  setError: (error: string) => void;
-}
+interface ProductFormProps extends Pick<BrandProductAddFormProps, 'selectedBrand' | 'handleAddProductSuccess'> {}
 
-const ProductForm: React.FC<ProductFormProps> = ({selectedBrand, setError, handleAddProductSuccess}) => {
+const ProductForm: React.FC<ProductFormProps> = ({selectedBrand, handleAddProductSuccess}) => {
   const [newProduct, setNewProduct] = useState<AdminProductAddRequest>({
     name: '',
     price: 0,
@@ -27,6 +27,7 @@ const ProductForm: React.FC<ProductFormProps> = ({selectedBrand, setError, handl
   });
   const [categories, setCategories] = useState<CategoryResponse[]>([]);
   const fetchCategories = useFetchCategories();
+  const [error, setError] = useState<BadRequestErrorResponse | null>(null);
 
   useEffect(() => {
     const getCategories = async () => {
@@ -37,7 +38,7 @@ const ProductForm: React.FC<ProductFormProps> = ({selectedBrand, setError, handl
     };
 
     getCategories();
-  }, [fetchCategories]);
+  }, []);
 
   const handleAddProduct = async () => {
     if (selectedBrand && selectedBrand.id > 0) {
@@ -46,7 +47,12 @@ const ProductForm: React.FC<ProductFormProps> = ({selectedBrand, setError, handl
         setNewProduct({name: '', price: 0, categoryId: 1, brandId: 1, status: 'EXPOSED'});
         handleAddProductSuccess();
       } catch (err) {
-        setError('Failed to add product');
+        const axiosError = err as AxiosError;
+        if (axiosError.response && axiosError.response.status === 400) {
+          setError(axiosError.response.data as BadRequestErrorResponse);
+        } else {
+          alert(err);
+        }
       }
     }
   };
@@ -55,6 +61,7 @@ const ProductForm: React.FC<ProductFormProps> = ({selectedBrand, setError, handl
     return (
       <>
         <h5 style={{marginBottom: '0px', paddingBottom: '0px'}}>✅ {selectedBrand.name}</h5>
+        <ErrorBox error={error} />
         <div className="form-box">
           <div className="input-group">
             <input
@@ -92,7 +99,7 @@ const BrandProductAddForm: React.FC<BrandProductAddFormProps> = ({
   handleAddProductSuccess,
 }) => {
   const [newBrandName, setNewBrandName] = useState('');
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<BadRequestErrorResponse | null>(null);
 
   const handleAddBrand = async () => {
     try {
@@ -100,16 +107,18 @@ const BrandProductAddForm: React.FC<BrandProductAddFormProps> = ({
       setNewBrandName('');
       handleAddBrandSuccess();
     } catch (err) {
-      setError('Failed to add brand');
+      const axiosError = err as AxiosError;
+      if (axiosError.response && axiosError.response.status === 400) {
+        setError(axiosError.response.data as BadRequestErrorResponse);
+      } else {
+        alert(err);
+      }
     }
   };
 
-  if (error) {
-    return <ErrorBox error={error} />;
-  }
-
   return (
     <>
+      <ErrorBox error={error} />
       <div className="form-box">
         <div className="input-group">
           <input
@@ -121,11 +130,7 @@ const BrandProductAddForm: React.FC<BrandProductAddFormProps> = ({
           <button onClick={handleAddBrand}>브랜드 추가하기</button>
         </div>
       </div>
-      <ProductForm
-        selectedBrand={selectedBrand}
-        setError={setError}
-        handleAddProductSuccess={handleAddProductSuccess}
-      />
+      <ProductForm selectedBrand={selectedBrand} handleAddProductSuccess={handleAddProductSuccess} />
     </>
   );
 };
