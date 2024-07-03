@@ -36,6 +36,10 @@ public interface AdminBrandApi {
   ResponseEntity<AdminBrandResponse> findOne(
       @Parameter(description = "브랜드 ID", required = true) @PathVariable("id") Long brandId);
 
+  @PutMapping("/{id}/status")
+  @Operation(summary = "브랜드의 상태 변경", description = "브랜드 ID로 특정 브랜드의 상태를 변경합니다.")
+  ResponseEntity<AdminBrandResponse> modifyBrandStatus(@PathVariable("id") Long brandId, @RequestBody AdminBrandStatusModifyRequest request);
+
   @PostMapping("/{id}/products")
   @Operation(summary = "브랜드에 제품 추가", description = "브랜드 ID로 제품을 추가합니다.")
   ResponseEntity<AdminProductResponse> addProduct(

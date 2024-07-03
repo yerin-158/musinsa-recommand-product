@@ -30,6 +30,8 @@ public enum BadRequestType {
   NOT_FOUND_BRAND("BRD-1", "브랜드가 존재하지 않습니다."),
   DUPLICATE_BRAND_NAME("BRD-2", "브랜드 이름이 중복됩니다."),
   BRAND_NAME_IS_REQUIRED("BRD-3", "브랜드 이름은 필수값입니다."),
+  BRAND_STATUS_IS_REQUIRED("BRD-4", "브랜드 상태는 필수값입니다."),
+  DELETED_BRAND_CANNOT_MODIFY("PRD-9", "삭제 처리된 브랜드는 수정할 수 없습니다."),
 
   NOT_FOUND_CATEGORY("CATE-1", "카테고리가 존재하지 않습니다."),
   LAST_PRODUCT_IN_CATEGORY("CATE-2", "카테고리에는 최소한 하나의 상품이 있어야 합니다."),

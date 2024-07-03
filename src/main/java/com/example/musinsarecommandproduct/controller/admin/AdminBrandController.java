@@ -6,7 +6,6 @@ import com.example.musinsarecommandproduct.controller.dto.PageResponse;
 import com.example.musinsarecommandproduct.service.admin.AdminBrandService;
 import com.example.musinsarecommandproduct.service.admin.AdminProductService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +42,12 @@ public class AdminBrandController implements AdminBrandApi {
   @GetMapping("/{id}")
   public ResponseEntity<AdminBrandResponse> findOne(@PathVariable("id") Long brandId) {
     AdminBrandResponse response = adminBrandService.findOne(brandId);
+    return ResponseEntity.ok(response);
+  }
+
+  @PutMapping("/{id}/status")
+  public ResponseEntity<AdminBrandResponse> modifyBrandStatus(@PathVariable("id") Long brandId, @RequestBody AdminBrandStatusModifyRequest request) {
+    AdminBrandResponse response = adminBrandService.modifyStatus(brandId, request);
     return ResponseEntity.ok(response);
   }
 

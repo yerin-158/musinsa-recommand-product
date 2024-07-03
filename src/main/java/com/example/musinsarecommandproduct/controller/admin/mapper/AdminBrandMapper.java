@@ -2,9 +2,11 @@ package com.example.musinsarecommandproduct.controller.admin.mapper;
 
 import com.example.musinsarecommandproduct.controller.admin.dto.AdminBrandAddRequest;
 import com.example.musinsarecommandproduct.controller.admin.dto.AdminBrandResponse;
+import com.example.musinsarecommandproduct.controller.admin.dto.AdminBrandStatusModifyRequest;
 import com.example.musinsarecommandproduct.entitie.Brand;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -24,4 +26,7 @@ public interface AdminBrandMapper {
   Brand toBrand(AdminBrandAddRequest request);
 
   AdminBrandResponse toAdminBrandResponse(Brand brand);
+
+  @Mapping(target = "status", source = "request.status")
+  Brand toBrand(@MappingTarget Brand brand, AdminBrandStatusModifyRequest request);
 }

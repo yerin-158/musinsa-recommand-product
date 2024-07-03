@@ -47,6 +47,15 @@ public class PriceStatistics extends BaseEntity {
     return priceStatistics;
   }
 
+  public static PriceStatistics createFirst(Product highestPriceProduct, Product lowestPriceProduct) {
+    PriceStatistics priceStatistics = new PriceStatistics();
+    priceStatistics.brandId = highestPriceProduct.getBrandId();
+    priceStatistics.categoryId = highestPriceProduct.getCategoryId();
+    priceStatistics.updateHighest(highestPriceProduct);
+    priceStatistics.updateLowest(lowestPriceProduct);
+    return priceStatistics;
+  }
+
   public void updateHighest(Product product) {
     this.highestPriceProductId = product.getId();
     this.highestPrice = product.getPrice();
