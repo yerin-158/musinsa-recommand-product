@@ -1,5 +1,4 @@
 # 손예린 무신사 과제 (24.07.03)
-***
 ## 스펙
 ### 서버
 - java
@@ -16,10 +15,9 @@
 - axios
 - functional component
 
-***
 ## Swagger
 http://localhost:8080/musinsa-api-docs/v1/swagger-ui/index.html
-***
+
 ## 서버 실행
 빌드 시 테스트가 함께 실행됩니다.
 ```
