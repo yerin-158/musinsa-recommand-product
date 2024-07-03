@@ -124,7 +124,7 @@ public class AdminProductService {
     Product updated = AdminProductMapper.INSTANCE.toProduct(target, request);
     productRepository.save(updated);
 
-    if (changePrice) {
+    if (changePrice && brand.isExposed()) {
       adminPriceStatisticsService.updatePriceStatistics(updated);
     }
 
@@ -153,7 +153,7 @@ public class AdminProductService {
     Product updated = AdminProductMapper.INSTANCE.toProduct(target, request);
     productRepository.save(updated);
 
-    if (changeViewable) {
+    if (changeViewable && brand.isExposed()) {
       adminPriceStatisticsService.updatePriceStatistics(updated);
     }
 
@@ -182,7 +182,9 @@ public class AdminProductService {
 
     target.delete();
     productRepository.save(target);
-    adminPriceStatisticsService.updatePriceStatistics(target);
+    if (brand.isExposed()) {
+      adminPriceStatisticsService.updatePriceStatistics(target);
+    }
 
     return AdminProductMapper.INSTANCE.toAdminProductResponse(target, brand, category);
   }
