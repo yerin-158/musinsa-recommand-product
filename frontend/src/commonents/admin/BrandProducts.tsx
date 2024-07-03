@@ -1,47 +1,58 @@
-import React from 'react';
-import {AdminProductAddRequest, AdminProductFullInfoResponse} from '../../model/admin/AdminProduct';
+import React, {useMemo} from 'react';
+import {AdminProductFullInfoResponse} from '../../model/admin/AdminProduct';
 import '../../css/brandProducts.css';
+import Pagination from '../common/Pagination';
+import {categories} from '../../util/categoryUtils';
 
 interface BrandProductsProps {
   products: AdminProductFullInfoResponse[] | null;
-  onAddProduct: () => void;
-  newProduct: AdminProductAddRequest;
-  setNewProduct: (product: AdminProductAddRequest) => void;
+  onProductClick: (product: AdminProductFullInfoResponse) => void;
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+  onActivateBrand: () => void;
+  brandIsActive: boolean;
 }
 
-const BrandProducts: React.FC<BrandProductsProps> = ({products, onAddProduct, newProduct, setNewProduct}) => {
+const BrandProducts: React.FC<BrandProductsProps> = ({
+  products,
+  onProductClick,
+  currentPage,
+  totalPages,
+  onPageChange,
+  onActivateBrand,
+  brandIsActive,
+}) => {
+  const canActivateBrand = useMemo(() => {
+    if (!products || products.length < categories.length) {
+      return false;
+    }
+    const categoryIdsWithProducts = new Set(products.map((product) => product.product.categoryId));
+    return categories.every((category) => categoryIdsWithProducts.has(category.id));
+  }, [products]);
+
   return (
-    <div className="container">
-      <h2>Products</h2>
+    <div className="product-list">
+      <div className="product-list-header">
+        <h4>브랜드 상품</h4>
+        {!brandIsActive && products && (
+          <button onClick={onActivateBrand} disabled={!canActivateBrand}>
+            브랜드 활성화
+          </button>
+        )}
+      </div>
       <ul>
         {products?.map((product) => (
-          <li key={product.product.id}>
-            {product.product.name} - ₩{product.product.price.toLocaleString('ko-KR')}
+          <li key={product.product.id} onClick={() => onProductClick(product)}>
+            [{product.category.name}] {product.product.name} - ₩{product.product.price.toLocaleString('ko-KR')}
           </li>
         ))}
       </ul>
-      <h3>상품 추가</h3>
-      <div className="input-group">
-        <input
-          type="text"
-          value={newProduct.name}
-          onChange={(e) => setNewProduct({...newProduct, name: e.target.value})}
-          placeholder="Product Name"
-        />
-        <input
-          type="number"
-          value={newProduct.price}
-          onChange={(e) => setNewProduct({...newProduct, price: +e.target.value})}
-          placeholder="Product Price"
-        />
-        <select
-          value={newProduct.categoryId}
-          onChange={(e) => setNewProduct({...newProduct, categoryId: +e.target.value})}>
-          <option value="">Select Category</option>
-          {/* Populate categories here */}
-        </select>
-        <button onClick={onAddProduct}>상품 추가하기</button>
-      </div>
+      {!products && <p>좌측에서 브랜드를 선택하세요.</p>}
+      {products && products.length === 0 ? <p>🥹 아직 등록된 상품이 없습니다.</p> : null}
+      {products && products.length > 0 && (
+        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
+      )}
     </div>
   );
 };

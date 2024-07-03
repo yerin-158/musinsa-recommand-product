@@ -8,6 +8,7 @@ export interface AdminProductAddRequest {
   price: number;
   brandId: number;
   categoryId: number;
+  status: ProductStatus;
 }
 export interface AdminProductResponse extends ResponseBase {
   id: number;

@@ -39,10 +39,10 @@ export const addProductToBrand = async (
   brandId: number,
   request: AdminProductAddRequest
 ): Promise<AdminProductFullInfoResponse> => {
-  const response = await apiClient.post<AdminProductFullInfoResponse>(
-    `/admin/api/v1/brands/${brandId}/products`,
-    request
-  );
+  const response = await apiClient.post<AdminProductFullInfoResponse>(`/admin/api/v1/brands/${brandId}/products`, {
+    ...request,
+    brandId,
+  });
   return response.data;
 };
 
@@ -120,4 +120,8 @@ export const getLowestPriceProductSet = async (
     params: {byBrand, brandId},
   });
   return response.data;
+};
+
+export const activateBrand = async (brandId: number): Promise<void> => {
+  await apiClient.put(`/admin/api/v1/brands/${brandId}/activate`);
 };

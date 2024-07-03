@@ -1,6 +1,9 @@
+import {BrandStatus} from '../types';
+
 export interface BrandSimpleResponse {
   id: number;
   name: string;
+  status: BrandStatus;
 }
 
 export interface CategorySimpleResponse {

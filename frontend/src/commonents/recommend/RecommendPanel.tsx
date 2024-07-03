@@ -63,11 +63,17 @@ const RecommendPanel: React.FC = () => {
         <h4>브랜드</h4>
         <ul>
           <li onClick={handleCombineBrand}>브랜드 없음</li>
-          {brands.map((brand) => (
-            <li key={brand.id} onClick={() => handleBrandChange(brand.id)}>
-              {brand.name}
-            </li>
-          ))}
+          {brands.map((brand) => {
+            if (brand.status != 'EXPOSED') {
+              return null;
+            }
+
+            return (
+              <li key={brand.id} onClick={() => handleBrandChange(brand.id)}>
+                {brand.name}
+              </li>
+            );
+          })}
         </ul>
       </div>
       <div className="product-set">
@@ -75,13 +81,10 @@ const RecommendPanel: React.FC = () => {
         {productSet ? (
           <div>
             <ul>
-              {productSet.products.map(({product, category, brand}, index) => (
-                <React.Fragment key={product.id}>
-                  <li></li>
-                  <li>
-                    [{category.name}] {mixBrand ? `[${brand.name}]` : ''} {product.name}: {formatPrice(product.price)}
-                  </li>
-                </React.Fragment>
+              {productSet.products.map(({product, category, brand}) => (
+                <li key={product.id}>
+                  [{category.name}] {mixBrand ? `[${brand.name}]` : ''} {product.name}: {formatPrice(product.price)}
+                </li>
               ))}
             </ul>
             <p>

@@ -1,93 +1,129 @@
 import React, {useState, useEffect} from 'react';
-import {AdminBrandAddRequest, AdminBrandResponse} from '../../model/admin/AdminBrand';
-import {AdminProductAddRequest, AdminProductFullInfoResponse} from '../../model/admin/AdminProduct';
-import {getAllBrands, getBrandProducts, addBrand, addProductToBrand} from '../../util/apiUtils';
-import BrandProducts from './BrandProducts';
+import {activateBrand, getAllBrands, getBrandProducts, modifyBrandProduct} from '../../util/apiUtils';
+import '../../css/admin.css';
 import BrandList from './BrandList';
+import BrandProducts from './BrandProducts';
+import ProductEditForm from './ProductEditForm';
+import {AdminBrandResponse} from '../../model/admin/AdminBrand';
+import {AdminProductAddRequest, AdminProductFullInfoResponse} from '../../model/admin/AdminProduct';
+import BrandProductAddForm from './BrandProductAddForm';
+import useFetchBrand from '../../hooks/useFetchBrands';
 
 const AdminPanel: React.FC = () => {
   const [brands, setBrands] = useState<AdminBrandResponse[]>([]);
-  const [selectedBrandId, setSelectedBrandId] = useState<number | null>(null);
-  const [productFullInfo, setProductFullInfo] = useState<AdminProductFullInfoResponse[] | null>(null);
-  const [newBrandName, setNewBrandName] = useState<string>('');
-  const [newProduct, setNewProduct] = useState<AdminProductAddRequest>({
-    name: '',
-    price: 0,
-    categoryId: 0,
-    brandId: 0,
-  });
+  const [selectedBrand, setSelectedBrand] = useState<AdminBrandResponse>();
+  const [products, setProducts] = useState<AdminProductFullInfoResponse[] | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<AdminProductFullInfoResponse | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const [fetchNewBrand, setFetchNewBrand] = useState(true);
+  const [fetchNewProduct, setFetchNewProduct] = useState(true);
+
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+
+  const fetchBrands = useFetchBrand();
+  const handleFetchBrands = () => {
+    fetchBrands({
+      callback: (brandsResponse) => {
+        setBrands(brandsResponse);
+        setFetchNewBrand(false);
+      },
+      errorCallback: () => {
+        setError('Failed to fetch brands');
+      },
+    });
+  };
 
   useEffect(() => {
-    const fetchBrands = async () => {
-      try {
-        const brandsResponse = await getAllBrands();
-        setBrands(brandsResponse);
-      } catch (err) {
-        console.error('Failed to fetch brands');
-      }
-    };
-
-    fetchBrands();
-  }, []);
+    if (fetchNewBrand) {
+      handleFetchBrands();
+    }
+  }, [fetchNewBrand]);
 
   useEffect(() => {
     const fetchProducts = async () => {
-      if (selectedBrandId !== null) {
+      if (selectedBrand && selectedBrand.id > 0) {
         try {
-          const productsResponse = await getBrandProducts(selectedBrandId);
-          setProductFullInfo(productsResponse.content);
+          const productsResponse = await getBrandProducts(selectedBrand.id, currentPage);
+          setProducts(productsResponse.content);
+          setFetchNewProduct(false);
+          setTotalPages(productsResponse.totalPages);
         } catch (err) {
-          console.error('Failed to fetch products');
+          setError('Failed to fetch products');
         }
       }
     };
 
     fetchProducts();
-  }, [selectedBrandId]);
+  }, [selectedBrand, fetchNewProduct, currentPage]);
 
-  const handleBrandChange = (id: number) => {
-    setSelectedBrandId(id);
+  const handleBrandChange = (brand: AdminBrandResponse) => {
+    setSelectedBrand(brand);
+    setSelectedProduct(null);
+    setCurrentPage(0);
   };
 
-  const handleAddBrand = async () => {
-    try {
-      await addBrand({name: newBrandName});
-      setNewBrandName('');
-      const brandsResponse = await getAllBrands();
-      setBrands(brandsResponse);
-    } catch (err) {
-      console.error('Failed to add brand');
-    }
+  const handleProductClick = (product: AdminProductFullInfoResponse) => {
+    setSelectedProduct(product);
   };
 
-  const handleAddProduct = async () => {
-    if (selectedBrandId) {
+  const handleUpdateProduct = async (updatedProduct: AdminProductAddRequest) => {
+    if (selectedProduct && selectedBrand) {
       try {
-        await addProductToBrand(selectedBrandId, newProduct);
-        const productsResponse = await getBrandProducts(selectedBrandId);
-        setProductFullInfo(productsResponse.content);
-        setNewProduct({name: '', price: 0, categoryId: 0, brandId: 0});
+        await modifyBrandProduct(selectedBrand.id, selectedProduct.product.id, updatedProduct);
+        const updatedProducts = await getBrandProducts(selectedBrand.id);
+        setProducts(updatedProducts.content);
+        setSelectedProduct(null);
       } catch (err) {
-        console.error('Failed to add product');
+        setError('Failed to update product');
       }
     }
   };
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handleActivateBrand = async () => {
+    if (selectedBrand) {
+      try {
+        await activateBrand(selectedBrand.id);
+        handleFetchBrands();
+      } catch (err) {
+        setError('Failed to activate brand');
+      }
+    }
+  };
+
+  if (error) {
+    return <h5>에러가 발생했습니다. {error}</h5>;
+  }
+
   return (
-    <div>
-      <BrandList
-        brands={brands}
-        onBrandChange={handleBrandChange}
-        onAddBrand={handleAddBrand}
-        newBrandName={newBrandName}
-        setNewBrandName={setNewBrandName}
+    <div className="admin-content">
+      <BrandProductAddForm
+        selectedBrand={selectedBrand}
+        handleAddBrandSuccess={() => setFetchNewBrand(true)}
+        handleAddProductSuccess={() => setFetchNewProduct(true)}
       />
-      {selectedBrandId && (
+      <div className="admin-panel">
+        <BrandList brands={brands} onBrandChange={handleBrandChange} />
         <BrandProducts
-          products={productFullInfo}
-          onAddProduct={handleAddProduct}
-          newProduct={newProduct}
-          setNewProduct={setNewProduct}
+          products={products}
+          onProductClick={handleProductClick}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          brandIsActive={selectedBrand?.status === 'EXPOSED'}
+          onActivateBrand={handleActivateBrand}
+        />
+      </div>
+      {selectedProduct && (
+        <ProductEditForm
+          selectedBrandId={selectedBrand?.id || 0}
+          product={selectedProduct}
+          onUpdateProduct={handleUpdateProduct}
         />
       )}
     </div>
