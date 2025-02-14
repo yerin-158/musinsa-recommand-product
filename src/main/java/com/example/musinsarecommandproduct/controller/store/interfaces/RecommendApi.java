@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Tag(name = "Recommend API", description = "최소가 상품 셋트 추천 API")
 public interface RecommendApi {
 
-  @GetMapping("/products")
+  @GetMapping("/lowest-price-set")
   @Operation(summary = "추천 제품 조회", description = "특정 조건에 따라 추천 제품 목록을 조회합니다.")
   ResponseEntity<ProductSetResponse> getLowestPriceProductSet(
       @Parameter(description = "브랜드 지정 유무", required = false) @RequestParam(name = "byBrand", defaultValue = "false", required = false) Boolean byBrand,
